@@ -31,15 +31,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'myApps.apps.HomeConfig',
     # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'home.apps.HomeConfig',
-    'admin.apps.AdminConfig',
-
 ]
 
 MIDDLEWARE = [
@@ -57,7 +55,7 @@ ROOT_URLCONF = 'hodgepodge.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,4 +134,4 @@ SESSION_REDIS_HOST = '120.79.52.3'
 SESSION_REDIS_PORT = 8464
 SESSION_REDIS_DB = 1
 SESSION_REDIS_PASSWORD = 'yxgw'
-SESSION_REDIS_PREFIX = 'session'
+SESSION_REDIS_PREFIX = 'News_hodge'

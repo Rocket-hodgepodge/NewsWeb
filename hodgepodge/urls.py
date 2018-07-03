@@ -18,6 +18,10 @@ from django.conf.urls.static import static
 from django.urls import path, include
 
 urlpatterns = [
-    path('/', include('home.urls')),
-    # path('admin/', admin.site.urls),
+    path('admin_page/', include('myApps.admin.admin_page.admin_page_api_urls')),
+    path('user_operation/', include('myApps.admin.user_operation.user_operation_api_urls')),
+    path('user_permission/', include('myApps.admin.user_permission.user_permission_api_urls')),
+    path('home_page/', include('myApps.home.home_page.home_page_api_urls')),
+    path('news/', include('myApps.home.news.news_api_urls')),
+    path('review/', include('myApps.home.review.review_operation_api_urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
