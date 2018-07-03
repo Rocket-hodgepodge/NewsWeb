@@ -84,7 +84,7 @@ class VerifyCode(object):
             x, y = self._font_size * t + dev_x, dev_y
             # 将字符通过随机颜色画到图片中
             draw.text((x, y), self._random_code[t],
-                      font=font, fill=self.random_color())
+                      font=font, fill=self.random_color(0, 200))
         # 进行高斯模糊
         image = image.filter(ImageFilter.GaussianBlur)
         # 将图片对象赋值给当前对象的verify_code_image属性
