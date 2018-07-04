@@ -80,7 +80,7 @@ class VerifyCode(object):
         # for循环将字符添加到图中
         for t in range(self._length):
             dev_x = randint(0, 5)  # 随机左右浮动
-            dev_y = randint(0, 5)  # 睡觉上下浮动
+            dev_y = randint(0, 5)  # 随机上下浮动
             x, y = self._font_size * t + dev_x, dev_y
             # 将字符通过随机颜色画到图片中
             draw.text((x, y), self._random_code[t],

@@ -9,8 +9,7 @@ from django.db import models
 
 
 class NewsArticle(models.Model):
-    new = models.ForeignKey('NewsType', models.DO_NOTHING, db_column='New_id', blank=True,
-                            null=True)  # Field name made lowercase.
+    type = models.ForeignKey('NewsType', models.DO_NOTHING, blank=True, null=True)
     title = models.CharField(max_length=128, blank=True, null=True)
     publish_time = models.DateTimeField(db_column='Publish_time', blank=True, null=True)  # Field name made lowercase.
     content = models.TextField(blank=True, null=True)
@@ -23,10 +22,8 @@ class NewsArticle(models.Model):
 
 
 class NewsLiked(models.Model):
-    news = models.ForeignKey(NewsArticle, models.DO_NOTHING, db_column='News_id', blank=True,
-                             null=True)  # Field name made lowercase.
-    use = models.ForeignKey('User', models.DO_NOTHING, db_column='Use_id', blank=True,
-                            null=True)  # Field name made lowercase.
+    news = models.ForeignKey(NewsArticle, models.DO_NOTHING, db_column='News_id', blank=True, null=True)  # Field name made lowercase.
+    use = models.ForeignKey('User', models.DO_NOTHING, db_column='Use_id', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -51,12 +48,9 @@ class Permission(models.Model):
 
 class Review(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    use = models.ForeignKey('User', models.DO_NOTHING, db_column='Use_id', blank=True,
-                            null=True)  # Field name made lowercase.
-    news = models.ForeignKey(NewsArticle, models.DO_NOTHING, db_column='News_id', blank=True,
-                             null=True)  # Field name made lowercase.
-    rev_content = models.CharField(db_column='Rev_content', max_length=256, blank=True,
-                                   null=True)  # Field name made lowercase.
+    use = models.ForeignKey('User', models.DO_NOTHING, db_column='Use_id', blank=True, null=True)  # Field name made lowercase.
+    news = models.ForeignKey(NewsArticle, models.DO_NOTHING, db_column='News_id', blank=True, null=True)  # Field name made lowercase.
+    rev_content = models.CharField(db_column='Rev_content', max_length=256, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -65,10 +59,8 @@ class Review(models.Model):
 
 class ReviewLiked(models.Model):
     r_liked_id = models.AutoField(db_column='R_liked_id', primary_key=True)  # Field name made lowercase.
-    id = models.ForeignKey(Review, models.DO_NOTHING, db_column='ID', blank=True,
-                           null=True)  # Field name made lowercase.
-    use = models.ForeignKey('User', models.DO_NOTHING, db_column='Use_id', blank=True,
-                            null=True)  # Field name made lowercase.
+    id = models.ForeignKey(Review, models.DO_NOTHING, db_column='ID', blank=True, null=True)  # Field name made lowercase.
+    use = models.ForeignKey('User', models.DO_NOTHING, db_column='Use_id', blank=True, null=True)  # Field name made lowercase.
     is_liked = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -78,7 +70,7 @@ class ReviewLiked(models.Model):
 
 class Role(models.Model):
     name = models.CharField(max_length=32, blank=True, null=True)
-    permission = models.ManyToManyField(Permission, through='RolePerRel')
+    role = models.ManyToManyField(Permission, through='RolePerRel')
 
     class Meta:
         managed = False
@@ -86,8 +78,7 @@ class Role(models.Model):
 
 
 class RolePerRel(models.Model):
-    per = models.ForeignKey(Permission, models.DO_NOTHING, db_column='Per_id',
-                            primary_key=True)  # Field name made lowercase.
+    per = models.ForeignKey(Permission, models.DO_NOTHING, db_column='Per_id', primary_key=True)  # Field name made lowercase.
     role = models.ForeignKey(Role, models.DO_NOTHING, db_column='Role_id')  # Field name made lowercase.
 
     class Meta:
@@ -97,14 +88,13 @@ class RolePerRel(models.Model):
 
 
 class User(models.Model):
-    rol = models.ForeignKey(Role, models.DO_NOTHING, db_column='Rol_id', blank=True,
-                            null=True)  # Field name made lowercase.
+    rol = models.ForeignKey(Role, models.DO_NOTHING, db_column='Rol_id', blank=True, null=True)  # Field name made lowercase.
     name = models.CharField(max_length=16, blank=True, null=True)
-    last_login_time = models.DateTimeField(db_column='Last_login_time', blank=True,
-                                           null=True)  # Field name made lowercase.
+    password = models.CharField(max_length=256, blank=True, null=True)
+    last_login_time = models.DateTimeField(db_column='Last_login_time', blank=True, null=True)  # Field name made lowercase.
     nick_name = models.CharField(max_length=32, blank=True, null=True)
-    head_icon = models.CharField(max_length=258, blank=True, null=True)
-    follow_types = models.ManyToManyField(NewsType, through='UserFollowRel')
+    head_icon = models.CharField(max_length=256, blank=True, null=True)
+    follow_type = models.ManyToManyField(NewsType, through='UserFollowRel')
 
     class Meta:
         managed = False
