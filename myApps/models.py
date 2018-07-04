@@ -96,7 +96,6 @@ class User(models.Model):
     head_icon = models.CharField(max_length=256, blank=True, null=True)
     follow_type = models.ManyToManyField(NewsType, through='UserFollowRel')
 
-
     class Meta:
         managed = False
         db_table = 'User'
