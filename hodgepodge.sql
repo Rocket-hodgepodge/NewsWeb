@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2018/7/3 14:30:21                            */
+/* Created on:     2018/7/4 10:33:31                            */
 /*==============================================================*/
 
 
@@ -122,9 +122,10 @@ create table User
    id                   int not null auto_increment,
    Rol_id               int,
    name                 varchar(16),
+   password             varchar(256),
    Last_login_time      datetime,
    nick_name            varchar(32),
-   head_icon            varchar(258),
+   head_icon            varchar(256),
    primary key (id)
 );
 
