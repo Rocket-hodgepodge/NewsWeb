@@ -70,7 +70,7 @@ class ReviewLiked(models.Model):
 
 class Role(models.Model):
     name = models.CharField(max_length=32, blank=True, null=True)
-    power = models.ManyToManyField(Permission, through='RolePerRel')
+    role = models.ManyToManyField(Permission, through='RolePerRel')
 
     class Meta:
         managed = False
