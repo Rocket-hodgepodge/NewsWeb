@@ -7,13 +7,10 @@
 	<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Minimal and Clean Sign up / Login and Forgot Form by FreeHTML5.co</title>
+	<title>大杂烩登录页面</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Free HTML5 Template by FreeHTML5.co" />
 	<meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
-	
-
-  
 
   	<!-- Facebook and Twitter integration -->
 	<meta property="og:title" content=""/>
@@ -35,6 +32,7 @@
 	<link rel="stylesheet" href="/static/css/animate.css">
 	<link rel="stylesheet" href="/static/css/style.css">
 
+
 	<!-- Modernizr JS -->
 	<script src="/static/js/modernizr-2.6.2.min.js"></script>
 	<!-- FOR IE9 below -->
@@ -51,46 +49,44 @@
 					<!--
                     	作者：1021766585@qq.com
                     	时间：2018-07-04
-                    	描述：from表单的action需要修改
+                    	描述：action 的值需要进行修改
                     -->
-					<form id="sign_up_form" method="post" action="" class="fh5co-form animate-box" data-animate-effect="fadeIn">
+					<form id="sign_in_form" action="" method="post" class="fh5co-form animate-box" data-animate-effect="fadeIn">
 						{% csrf_token %}
-                        <h2>注册</h2>
-						<div id="sign_up_info" class="form-group">
-							<div id="sign_up_success" class="alert alert-success" role="alert">注册成功</div>
+                        <h2>登录</h2>
+						<div id="sign_in_info" class="form-group">
+							<div id="sign_in_success" class="alert alert-success" role="alert"></div>
 						</div>
 						<div class="form-group">
-							<label for="name" class="sr-only">用户名</label>
-							<input type="text" name="username" class="form-control" id="name" placeholder="用户名" autocomplete="off">
+							<label for="username" class="sr-only">用户名</label>
+							<input type="text" name="username" class="form-control" id="username" placeholder="用户名" autocomplete="off">
 						</div>
 						<div class="form-group">
 							<label for="password" class="sr-only">密码</label>
 							<input type="password" name="password" class="form-control" id="password" placeholder="密码" autocomplete="off">
 						</div>
 						<div class="form-group">
-							<label for="re-password" class="sr-only">确认密码</label>
-							<input type="password" name="re_password" class="form-control" id="re-password" placeholder="确认密码" autocomplete="off">
-						</div>
-						<div class="form-group">
 							<label for="v_code" class="sr-only">验证码</label>
 							<input type="text" name="v_code" class="form-control" id="v_code" placeholder="验证码" autocomplete="off">
 						</div>
 						<div class="form-group">
-							<img id="code_image" src="/user_operation/verify/1/" onclick="refresh_verify(this)"/>
+							<img src="/user_operation/verify/1/" />
 						</div>
 						<div class="form-group">
-							<p>已经注册过了吗? <a href="index.html">登录</a></p>
+							<!--
+                            	作者：1021766585@qq.com
+                            	时间：2018-07-04
+                            	描述：这里注册的href需要修改
+                            -->
+							<p>没有注册过吗? <a href="sign-up.html">注册</a></p>
 						</div>
 						<div class="form-group">
-							<input type="submit" value="注册" class="btn btn-primary">
+							<input type="submit" value="登录" class="btn btn-primary">
 						</div>
 					</form>
 					<!-- END Sign In Form -->
 
 				</div>
-			</div>
-			<div class="row" style="padding-top: 60px; clear: both;">
-				<div class="col-md-12 text-center"><p><small>&copy; All Rights Reserved. More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></small></p></div>
 			</div>
 		</div>
 	
@@ -102,11 +98,11 @@
 	<script src="/static/js/jquery.placeholder.min.js"></script>
 	<!-- Waypoints -->
 	<script src="/static/js/jquery.waypoints.min.js"></script>
-	<script src="/static/js/jquery.form.min.js"></script>
 	<!-- Main JS -->
 	<script src="/static/js/main.js"></script>
-	<script src="/static/js/page_js/sign_up_page.js"></script>
-	
+	<script type="text/javascript" src="/static/js/jquery.form.min.js" ></script>
+	<script src="/static/js/page_js/sign_in_page.js"></script>
+
 	</body>
 </html>
 

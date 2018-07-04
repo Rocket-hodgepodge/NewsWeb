@@ -1,9 +1,9 @@
 $(function(){
+	var sign_up_info = $('#sign_up_info');
+	var sign_up_success = $('#sign_up_success');
+	sign_up_info.hide();
 	$('#sign_up_form').submit(function(e){
-		var sign_up_info = $('#sign_up_info');
-		var sign_up_success = $('#sign_up_success');
-		sign_up_info.hide();
-		e.preventDefault()
+		e.preventDefault();
 		var username = $('#name').val();
 		var password = $('#password').val();
 		var repassword = $('#re-password').val();
@@ -31,14 +31,20 @@ $(function(){
 	                sign_up_info.show();
 	                sign_up_info.html('注册成功,1秒后跳转到登录界面');
 	                setTimeout(function (e) {
-	                   window.location.href = '/login/'; //这里的url需要修改
+	                   window.location.href = '/user_operation/login/'; //这里的url需要修改
 	                },1000);
 	            }else {
 	                sign_up_info.show();
 					sign_up_success.html(data.msg);
+					refresh_verify()
 	            }
 			});
 		}
-		
+
 	});
 });
+
+function refresh_verify() {
+	var code_img = $('#code_image');
+	code_img.attr('src', '/user_operation/verify/' + Math.floor(Math.random() * 10 + 1) + '/');
+}
