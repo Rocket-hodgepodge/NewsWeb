@@ -130,6 +130,7 @@ STATICFILES_DIRS = [
 
 # 使用redis保存session数据
 SESSION_ENGINE = 'redis_sessions.session'
+
 # SESSION_REDIS_HOST = '120.79.52.3'
 # SESSION_REDIS_PORT = 8464
 # SESSION_REDIS_DB = 1
