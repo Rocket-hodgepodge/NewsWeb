@@ -16,13 +16,19 @@ def add_review(request):
         user_id = request.session['user_id']
         news_id = request.POST.get('news_id')
         rev_content = request.POST.get('review')
+        # 设置返回数据
+        data = {
+            'code': 200
+        }
         try:
             Review.objects.create(
                 Use_id=user_id,
                 News_id=news_id,
                 Rev_content=rev_content
             )
+            Review.save()
+            return HttpResponse(json.dumps(data))
         except Exception as e:
-            return HttpResponse(json.dumps())
 
+            return HttpResponse(json.dumps())
         return
