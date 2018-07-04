@@ -70,7 +70,6 @@ class ReviewLiked(models.Model):
 
 class Role(models.Model):
     name = models.CharField(max_length=32, blank=True, null=True)
-    role = models.ManyToManyField(Permission, through='RolePerRel')
 
     class Meta:
         managed = False
@@ -94,7 +93,6 @@ class User(models.Model):
     last_login_time = models.DateTimeField(db_column='Last_login_time', blank=True, null=True)  # Field name made lowercase.
     nick_name = models.CharField(max_length=32, blank=True, null=True)
     head_icon = models.CharField(max_length=256, blank=True, null=True)
-    use = models.ManyToManyField(NewsType, through='UserFollowRel')
 
     class Meta:
         managed = False
