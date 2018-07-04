@@ -12,15 +12,15 @@ $(function(){
 			sign_in_success.html('输入不能为空,或验证码长度不够!');
 		}else {
 			$('#sign_in_form').ajaxSubmit(function(data){
-				if (data.code == 200){
-					sign_up_info.show();
-	                sign_up_success.html('登录成功,1秒后跳转到主页界面');
+				if (data.code === 200){
+                    sign_in_info.show();
+	                sign_in_success.html('登录成功,1秒后跳转到主页界面');
 	                setTimeout(function (e) {
-	                	role = data.role
-	                	if (role){
-	                		window.location.href = '/login/'; //这里的url需要修改,指向前台主页
+	                	let role = data.role_id;
+	                	if (role !== 1){
+	                		window.location.href = '/home/'; //这里的url需要修改,指向前台主页
 	                	}else {
-	                		window.location.href = '/login/'; //这里的url需要修改,指向后台主页
+	                		window.location.href = '/admin/'; //这里的url需要修改,指向后台主页
 	                	}
 	                },1000);
 				}else {
@@ -31,3 +31,8 @@ $(function(){
 		}
 	});
 });
+
+function refresh_verify() {
+	var code_img = $('#code_image');
+	code_img.attr('src', '/user_operation/verify/' + Math.floor(Math.random() * 10 + 1) + '/');
+}

@@ -5,3 +5,7 @@ from myApps.models import User
 
 def hello_world(request):
     return HttpResponse('hello world!')
+
+
+def index(request):
+    return HttpResponse('Index!')

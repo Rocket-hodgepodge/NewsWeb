@@ -6,5 +6,5 @@ urlpatterns = [
     path('', user_operation_api.hello_user_operation),
     path('login/', user_operation_api.login),
     path('verify/<int:v_random>/', user_operation_api.set_verify),
-    path('regist/', user_operation_api.regist)
+    path('register/', user_operation_api.register)
 ]
