@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2018/7/3 14:30:21                            */
+/* Created on:     2018/7/4 16:19:56                            */
 /*==============================================================*/
 
 
@@ -30,7 +30,7 @@ drop table if exists User_Follow_Rel;
 create table News_article
 (
    id                   int not null auto_increment,
-   New_id               int,
+   type_id              int,
    title                varchar(128),
    Publish_time         datetime,
    content              text,
@@ -46,7 +46,7 @@ create table News_liked
 (
    id                   int not null auto_increment,
    News_id              int,
-   Use_id               int,
+   User_id              int,
    primary key (id)
 );
 
@@ -122,9 +122,10 @@ create table User
    id                   int not null auto_increment,
    Rol_id               int,
    name                 varchar(16),
+   password             varchar(256),
    Last_login_time      datetime,
    nick_name            varchar(32),
-   head_icon            varchar(258),
+   head_icon            varchar(256),
    primary key (id)
 );
 
@@ -134,11 +135,11 @@ create table User
 create table User_Follow_Rel
 (
    id                   int not null,
-   Use_id               int not null,
-   primary key (id, Use_id)
+   User_id              int not null,
+   primary key (id, User_id)
 );
 
-alter table News_article add constraint FK_Relationship_4 foreign key (New_id)
+alter table News_article add constraint FK_Relationship_4 foreign key (type_id)
       references News_type (id) on delete restrict on update restrict;
 
 alter table News_liked add constraint FK_NEW_LIKED foreign key (News_id)
@@ -168,7 +169,7 @@ alter table Role_Per_Rel add constraint FK_Role_Power_2 foreign key (Role_id)
 alter table User add constraint FK_Role_User foreign key (Rol_id)
       references Role (id) on delete restrict on update restrict;
 
-alter table User_Follow_Rel add constraint FK_Relationship_12 foreign key (Use_id)
+alter table User_Follow_Rel add constraint FK_Relationship_12 foreign key (User_id)
       references User (id) on delete restrict on update restrict;
 
 alter table User_Follow_Rel add constraint FK_Relationship_13 foreign key (id)
