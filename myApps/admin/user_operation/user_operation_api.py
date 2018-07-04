@@ -21,11 +21,17 @@ def register(request):
     if request.method == 'GET':
         return render(request, 'sign_up.html')
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        re_password = request.POST.get('re_password')
-        v_code = request.POST.get('v_code')
         data = {}
+        try:
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            re_password = request.POST.get('re_password')
+            v_code = request.POST.get('v_code')
+        except KeyError as e:
+            data['code'] = 505
+            data['msg'] = '请求参数错误' + str(e)
+            return JsonResponse(data)
+
         if v_code != request.session['v_code']:
             data['code'] = 3004
             data['msg'] = '注册验证码不正确'
@@ -59,10 +65,16 @@ def login(request):
     if request.method == 'GET':
         return render(request, 'sign_in.html')
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        v_code = request.POST.get('v_code')
         data = {}
+        try:
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            v_code = request.POST.get('v_code')
+        except KeyError as e:
+            data['code'] = 505
+            data['msg'] = '请求参数错误' + str(e)
+            return JsonResponse(data)
+
         if v_code != request.session['v_code']:
             data['code'] = 3203
             data['msg'] = '登陆验证码错误'
