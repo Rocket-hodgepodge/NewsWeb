@@ -71,7 +71,6 @@ class ReviewLiked(models.Model):
 class Role(models.Model):
     name = models.CharField(max_length=32, blank=True, null=True)
     role = models.ManyToManyField(Permission, through='RolePerRel')
-
     class Meta:
         managed = False
         db_table = 'Role'
