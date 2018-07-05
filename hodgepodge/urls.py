@@ -24,4 +24,5 @@ urlpatterns = [
     path('home_page/', include('myApps.home.home_page.home_page_api_urls')),
     path('news/', include('myApps.home.news.news_api_urls')),
     path('review/', include('myApps.home.review.review_operation_api_urls')),
+    path('count/', include('count.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

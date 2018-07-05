@@ -9,7 +9,7 @@ from django.db import models
 
 
 class NewsArticle(models.Model):
-    new = models.ForeignKey('NewsType', models.DO_NOTHING, db_column='New_id', blank=True, null=True)  # Field name made lowercase.
+    type = models.ForeignKey('NewsType', models.DO_NOTHING, blank=True, null=True)
     title = models.CharField(max_length=128, blank=True, null=True)
     publish_time = models.DateTimeField(db_column='Publish_time', blank=True, null=True)  # Field name made lowercase.
     content = models.TextField(blank=True, null=True)
@@ -70,6 +70,7 @@ class ReviewLiked(models.Model):
 
 class Role(models.Model):
     name = models.CharField(max_length=32, blank=True, null=True)
+    role = models.ManyToManyField(Permission, through='RolePerRel')
 
     class Meta:
         managed = False
@@ -93,6 +94,7 @@ class User(models.Model):
     last_login_time = models.DateTimeField(db_column='Last_login_time', blank=True, null=True)  # Field name made lowercase.
     nick_name = models.CharField(max_length=32, blank=True, null=True)
     head_icon = models.CharField(max_length=256, blank=True, null=True)
+    follow_type = models.ManyToManyField(NewsType, through='UserFollowRel')
 
     class Meta:
         managed = False
