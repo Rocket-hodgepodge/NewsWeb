@@ -51,6 +51,7 @@ class Review(models.Model):
     use = models.ForeignKey('User', models.DO_NOTHING, db_column='Use_id', blank=True, null=True)  # Field name made lowercase.
     news = models.ForeignKey(NewsArticle, models.DO_NOTHING, db_column='News_id', blank=True, null=True)  # Field name made lowercase.
     rev_content = models.CharField(db_column='Rev_content', max_length=256, blank=True, null=True)  # Field name made lowercase.
+    create_time = models.DateTimeField(db_column='create_time', auto_now_add=True)  # Field name made lowercase.
 
     class Meta:
         managed = False

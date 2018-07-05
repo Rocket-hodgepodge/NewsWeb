@@ -4,9 +4,6 @@ AUTH: TTC
 DATE: 2018年7月5日 09:49:38
 """
 
-
-
-
 from functools import wraps
 from django.http.response import HttpResponseRedirect
 
@@ -18,6 +15,7 @@ def is_login(fn):
     :param fn:  需要判断的方法
     :return: 返回具体页面
     """
+
     @wraps(fn)
     def wrapper(request, *args, **kwargs):
         try:

@@ -1,0 +1,11 @@
+#add_review_form {
+	margin: 0 20px;
+}
+#review_ul li {
+	padding: 10px;
+	margin-bottom: 5px;
+}
+.islike_item {
+	float: left;
+
+}

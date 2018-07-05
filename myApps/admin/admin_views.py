@@ -1,13 +1,14 @@
-from django.shortcuts import render
-
-from myApps.untils.wrapper_set import is_login
-
 """
 后台视图页面
 该视图所有页面均需要登录才能访问,后续添加判断的装饰器即可
 AUTH: TTC
 DATE: 2018年7月5日 02:12:57
 """
+
+
+from django.shortcuts import render
+
+from myApps.untils.wrapper_set import is_login
 
 
 @is_login
