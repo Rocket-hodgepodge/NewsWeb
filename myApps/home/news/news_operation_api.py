@@ -56,7 +56,6 @@ def integrated_query(request):
         return JsonResponse(data)
 
 
-
 def news_title_search(request):
     """
     新闻标题搜索
