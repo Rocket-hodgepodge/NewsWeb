@@ -7,5 +7,5 @@ urlpatterns = [
     path(r'reviews/', review_operation_api.get_review, name='get_review'),
     path(r'is_like/', review_operation_api.is_like, name='rev_is_like'),
     path(r'is_liked_add', review_operation_api.add_is_liked, name="add_is_like"),
-    path(r'delete_rev')
+    path(r'delete_rev', review_operation_api.delete_rev, name='delete_rev')
 ]
