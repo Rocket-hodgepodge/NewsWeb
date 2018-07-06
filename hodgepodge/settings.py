@@ -147,5 +147,5 @@ SESSION_REDIS = {
     'db': REDIS_DB,
     'password': REDIS_PASSWORD,
     'prefix': 'News_hodge',
-    'socket_timeout': 10
+    'socket_timeout': 100
 }
