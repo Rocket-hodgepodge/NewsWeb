@@ -4,17 +4,20 @@ AUTH:
 DATA:
 """
 from datetime import datetime
+
+import os
 from django.contrib.auth.hashers import make_password, check_password
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
 from io import BytesIO
 
+from hodgepodge.settings import BASE_DIR
 from myApps.untils import verify_code
 from myApps.models import User, Role
 
 
 def hello_user_operation(request):
-    return HttpResponse('Hello User Operation')
+    return HttpResponse('hello')
 
 
 def register(request):
@@ -112,3 +115,32 @@ def set_verify(request, v_random):
         resp = HttpResponse(f.getvalue(), content_type='image/jpeg')
         request.session['v_code'] = v_code.verify_code
         return resp
+
+
+def logout(request):
+    if request.method == 'GET':
+        for key in ['user_id', 'role_id']:
+            del request.session[key]
+        data = {'code': 200, 'msg': '注销成功'}
+        return JsonResponse(data)
+
+
+def info_modify(request):
+    if request.method == 'GET':
+        return render(request, '')
+    if request.method == 'POST':
+        nick_name = request.POST.get('nick_name')
+        head_icon = request.FILES.get('head_icon')
+        upload_dir = os.path.join(os.path.join(BASE_DIR, 'static'), head_icon.name)
+        try:
+            with open(upload_dir, 'wb') as f:
+                for chunk in head_icon.chunks():
+                    f.write(chunk)
+            user = User.objects.filter(id=request.session['user_id']).first()
+            user.nick_name = nick_name
+            user.head_icon = os.path.join('/static/', head_icon.name)
+            user.save()
+            return HttpResponse('操作成功')
+        except Exception:
+            return HttpResponse('操作失败')
+
