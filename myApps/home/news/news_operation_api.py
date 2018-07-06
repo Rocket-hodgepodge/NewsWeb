@@ -1,11 +1,11 @@
 """
 新闻操作模块
 """
-from django.contrib.sites import requests
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
+from django.views.decorators.http import require_GET, require_http_methods
 
 from myApps.models import NewsArticle, NewsType
 
@@ -17,6 +17,43 @@ def hello_news_operation(request):
 def news_search(request):
     if request.method == 'GET':
         return render(request, 'home/news_search.html')
+
+
+@require_GET
+def integrated_query(request):
+    data = {}
+    try:
+        title = request.GET['title']
+        type_id = request.GET['type']
+        page = int(request.GET['page'])
+        rows = int(request.GET['rows'])
+        news_set = NewsArticle.objects.filter(title__contains=title, type_id=type_id)[(rows * (page - 1)):rows * page]
+    except KeyError:
+        data['code'] = 505
+        data['msg'] = '参数错误'
+        return JsonResponse(data)
+    except Exception as e:
+        data['code'] = 400
+        data['msg'] = '服务器忙,请稍后再试!' + str(e)
+        return JsonResponse(data)
+    else:
+        news_list = []
+        for news_item in news_set:
+            item = {
+                'id': news_item.pk,
+                'type': news_item.type.name,
+                'content': news_item.content[:30]+'...',
+                'host': news_item.from_host,
+                'publish_time': news_item.publish_time,
+                'title': news_item.title,
+                'read_total': news_item.read_total
+            }
+            news_list.append(item)
+        data['code'] = 200
+        data['msg'] = '请求成功'
+        data['total'] = len(news_list)
+        data['rows'] = news_list
+        return JsonResponse(data)
 
 
 def news_title_search(request):
@@ -38,7 +75,8 @@ def news_title_search(request):
                 # Q(title__contains='abc')模糊查询带有abc的标题   Q(title__startwith='abc')以abc开头
                 news_titles = NewsArticle.objects.filter(Q(title__contains=news_title)).values('title')
                 if news_titles:
-                    contents = NewsArticle.objects.filter(Q(title__contains=news_title)).values('id', 'title', 'publish_time')
+                    contents = NewsArticle.objects.filter(Q(title__contains=news_title)).values('id', 'title',
+                                                                                                'publish_time')
                     data['code'] = 200
                     data['msg'] = '请求成功'
                 else:
@@ -83,13 +121,10 @@ def news_type_search(request):
     :return:
     """
     if request.method == 'GET':
-        return render(request, 'news_type.html')
-
-    if request.method == 'POST':
         data = {}
         try:
             # 获取新闻类型id
-            type_id = request.POST.get('id')
+            type_id = request.GET.get('id')
             if type_id:
                 # 获取所有相关类型新闻的id title 和 publish_time
                 contents = NewsArticle.objects.filter(type=type_id).values('id', 'title', 'publish_time')
@@ -112,21 +147,29 @@ def news_type_search(request):
         return render(request, 'news_show.html', {'data': data})
 
 
+@require_http_methods(['DELETE'])
 def del_news(request):
     """
     删除新闻
     :param request:
     :return:
     """
-    if request.method == 'POST':
-        data = {}
-        try:
-            pass
-        except Exception as e:
-            print(e)
-            data['code'] = 4001
-            data['msg'] = '请求失败,删除的news_id不存在'
-            return JsonResponse(data)
+    data = {}
+    try:
+        news_id = request.POST.get('')
+        NewsArticle.objects.get(pk=news_id).delete()
+    except KeyError:
+        data['code'] = 505
+        data['msg'] = '请求参数错误!'
+        return JsonResponse(data)
+    except ObjectDoesNotExist:
+        data['code'] = 4001
+        data['msg'] = '请求失败,删除的news_id不存在'
+        return JsonResponse(data)
+    else:
+        data['code'] = 200
+        data['msg'] = '请求成功'
+        return JsonResponse(data)
 
 
 def alter_news(request):
