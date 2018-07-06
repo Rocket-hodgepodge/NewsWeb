@@ -14,6 +14,6 @@ urlpatterns = [
     path('news/', home_views.news),
     path('newsSearch/', home_views.news_search),
     # showNews 可加新闻ID参数
-    path('showNews/', home_views.show_news),
+    path('showNews/<int:news_id>/', home_views.show_news),
     path('userInfo/', home_views.user_info),
 ]
