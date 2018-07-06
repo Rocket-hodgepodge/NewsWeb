@@ -141,6 +141,7 @@ def info_modify(request):
             user.head_icon = os.path.join('/static/', head_icon.name)
             user.save()
             return HttpResponse('操作成功')
-        except Exception:
+        except Exception as e:
+            print(e)
             return HttpResponse('操作失败')
 

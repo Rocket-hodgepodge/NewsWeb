@@ -4,6 +4,7 @@ AUTH: TTC
 DATE: 2018年7月6日 01:47:14
 """
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Count
 from django.shortcuts import render
 from django.http.response import HttpResponse
 from django.db import connection
@@ -132,3 +133,27 @@ def user_info(request):
     :return:
     """
     return render(request, 'home/user_info.html')
+
+
+def get_type_count(request):
+    """
+    前台左边新闻分类
+    :param request:
+    :return:
+    """
+    data = {}
+    type_list = []
+    type_query = NewsArticle.objects.values_list('type_id').annotate(Count('type_id'))
+    print(type_query)
+    for x in type_query:
+        type_item = NewsType.objects.values_list('name').get(pk=x[0])
+        item = {
+            'id': x[0],
+            'total': x[1],
+            'name': type_item.name
+        }
+        type_list.append(item)
+    data['code'] = 200
+    data['msg'] = '请求成功'
+    data['type_list'] = type_list
+    return HttpResponse('asd')
