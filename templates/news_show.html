@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>news_show</title>
+</head>
+<body>
+
+{#{{ data.id }}#}
+{#{{ data.title }}#}
+{#{{ data.publish_time }}#}
+
+{{ data.content }}
+
+{#<ul>#}
+{#request 也可以在这里渲染出来#}
+{#    {% for elem in titles_list %}#}
+{#        <li>{{ elem.title }}</li>#}
+{#    {% endfor %}#}
+{#</ul>#}
+{##}
+{##}
+{#      <ul class="pagination">#}
+{#          {% if titles_list.has_previous %}#}
+{#        <li><a href="/news_title_search/?page={{ titles_list.previous_page_number }}">上一页</a></li>  ---直接使用方法，上一页，#}
+{#        {% else %}#}
+{#        <li class="disabled"><a href="#">上一页</a></li>#}
+{#          {% endif %}#}
+{##}
+{#      {% for num in p.page_range %}#}
+{#        <li><a href="/news_title_search/?page={{ num }}">{{ num }}</a></li>#}
+{#      {% endfor %}#}
+{##}
+{#        {% if book_list.has_next %}#}
+{#        <li><a href="/news_title_search/?page={{ book_list.next_page_number }}">下一页</a></li>#}
+{#      {% else %}#}
+{#        <li class="disabled"><a href="#">下一页</a></li>#}
+{#        {% endif %}#}
+{#      </ul>#}
+
+</body>
+</html>
