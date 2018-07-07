@@ -27,15 +27,15 @@ def get_news_liked_num(request, news_id):
             news_id = request.GET.get('news_id')
             # 获取新闻点赞数
             total = NewsLiked.objects.filter(News=news_id).count()
-
-            data['code'] = 200
-            data['msg'] = '请求成功'
-            data['total'] = int(total)
-            return JsonResponse(data)
         except Exception as e:
             print(e)
             data['code'] = 4021
             data['msg'] = '请求的news_id不存在'
+            return JsonResponse(data)
+        else:
+            data['code'] = 200
+            data['msg'] = '请求成功'
+            data['total'] = int(total)
             return JsonResponse(data)
 
 
