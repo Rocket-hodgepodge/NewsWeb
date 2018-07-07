@@ -24,6 +24,7 @@ $(function(){
 	                	}
 	                },1000);
 				}else {
+					sign_in_info.show();
 					sign_in_success.html(data.msg);
 					refresh_verify()
 				}

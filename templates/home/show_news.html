@@ -25,8 +25,11 @@
 				</a>
 
 				<ul class="top-nav list-none">
-					<li class="t"><a href='#' onclick='SetHome(this,window.location,"非IE浏览器不支持此功能，请手动设置！");' style='cursor:pointer;' title='设为首页'  >设为首页</a><span>|</span><a href='#' onclick='addFavorite("非IE浏览器不支持此功能，请手动设置！");' style='cursor:pointer;' title='收藏本站'  >收藏本站</a><span>|</span><a class="fontswitch" id="StranLink" href="javascript:StranBody()">繁体中文</a><span>|</span><a href='#' title='WAP'>WAP</a><span>|</span><a href='#' title='English'  >English</a><span>|</span><a href='#' title='我的订单' class='shopweba'>我的订单</a></li>
-					<li class="b"><a href="admin/"><strong><span style="color:#ffff00;"><span style="font-size: 16px;">后台演示请点击这里进入</span></span></strong></a></li>
+					<a href='#' onclick='SetHome(this,window.location,"非IE浏览器不支持此功能，请手动设置！");' style='cursor:pointer;' title='设为首页'  >设为首页</a><span>|</span>
+					<a href='#' onclick='addFavorite("非IE浏览器不支持此功能，请手动设置！");' style='cursor:pointer;' title='收藏本站'  >收藏本站</a><span>|</span>
+					<a class="fontswitch" id="StranLink" href="javascript:StranBody()">繁体中文</a><span>|</span>
+					<a href='/user_operation/login/' title='Login'>登录</a><span>|</span>
+					<a href='/user_operation/register/' title='Register'>注册</a><span>|</span>
 				</ul>
 			</div>
 			<nav>
@@ -69,22 +72,24 @@
     <div class="sb_box">
 		<div class="clear"></div>
         <div class="active" id="shownews">
-            <h1 class="title">新闻标题</h1>
+            <h1 class="title">{{ data.title }}</h1>
             <div class="editor">
             	<div>
-					<div id="metinfo_additional"></div>
+					<div id="metinfo_additional">
+                        {{ data.content | safe }}
+                    </div>
             	</div>
             	<div class="clear"></div>
             </div>
 			<div class="met_hits">
-				点击次数：<span>123</span>&nbsp;&nbsp;发表时间：2012-07-17 16:53:59&nbsp;&nbsp;
+				点击次数：<span>{{ data.read_total }}</span>&nbsp;&nbsp;发表时间：{{ data.publish_time }}&nbsp;&nbsp;
 				【<a href="javascript:window.print()">打印此页</a>】
 			</div>
 		    <div id="set_review">
 		    	<form id="add_review_form" class="form-horizontal" action="" method="post">
 		    		<div class="form-group">
 					   	<label for="add_review">添加评论:</label>
-					   	<textarea type="text" style="resize:none" class="form-control" id="add_review_text" rows="3" placeholder="请发表你的看法..."></textarea>
+					   	<textarea style="resize:none" class="form-control" id="add_review_text" rows="3" placeholder="请发表你的看法..."></textarea>
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-default">发表</button>

@@ -136,11 +136,16 @@ SESSION_ENGINE = 'redis_sessions.session'
 # SESSION_REDIS_DB = 1
 # SESSION_REDIS_PASSWORD = 'yxgw'
 # SESSION_REDIS_PREFIX = 'News_hodge'
+REDIS_HOST = '120.79.52.3'
+REDIS_PORT = 8464
+REDIS_DB = 1
+REDIS_PASSWORD = 'yxgw'
+
 SESSION_REDIS = {
-    'host': '120.79.52.3',
-    'port': 8464,
-    'db': 1,
-    'password': 'yxgw',
+    'host': REDIS_HOST,
+    'port': REDIS_PORT,
+    'db': REDIS_DB,
+    'password': REDIS_PASSWORD,
     'prefix': 'News_hodge',
-    'socket_timeout': 10
+    'socket_timeout': 100
 }
