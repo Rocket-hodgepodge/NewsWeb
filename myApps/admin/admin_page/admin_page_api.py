@@ -3,11 +3,14 @@
 AUTH:
 DATA:
 """
-
+from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
 from django.db import connection
 from myApps.models import NewsArticle
+
+
+
 
 
 def hello_admin_page(request):
@@ -27,7 +30,28 @@ def count_types(request):
     return JsonResponse(data)
 
 
+def count_news(request):
+    data = {}
+    date_list = []
 
+    my_date = datetime.today()
+    a = NewsArticle.objects.filter(publish_time__gt=my_date).count()
+    date_str = my_date.strftime('%Y-%m-%d')
+    item = {'value': a, 'name': date_str}
+    date_list.append(item)
+    for i in range(4):
+        temp = my_date
+        my_date -= timedelta(days=1)
+        a = NewsArticle.objects.filter(publish_time__gte=my_date, publish_time__lte=temp).count()
+        date_str = my_date.strftime('%Y-%m-%d')
+        item = {'value': a, 'name': date_str}
+        date_list.append(item)
+
+    data['code'] = 200
+    data['msg'] = '请求成功'
+    data['datas'] = date_list
+
+    return JsonResponse(data)
 
 
 
