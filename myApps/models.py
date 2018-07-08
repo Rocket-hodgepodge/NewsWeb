@@ -60,8 +60,8 @@ class Review(models.Model):
 
 class ReviewLiked(models.Model):
     r_liked_id = models.AutoField(db_column='R_liked_id', primary_key=True)  # Field name made lowercase.
-    id = models.ForeignKey(Review, models.DO_NOTHING, db_column='ID', blank=True, null=True)  # Field name made lowercase.
-    use = models.ForeignKey('User', models.DO_NOTHING, db_column='Use_id', blank=True, null=True)  # Field name made lowercase.
+    id = models.ForeignKey(Review, db_column='ID', blank=True, null=True, on_delete=models.CASCADE)  # Field name made lowercase.
+    use = models.ForeignKey('User', db_column='Use_id', blank=True, null=True, on_delete=models.CASCADE)  # Field name made lowercase.
     is_liked = models.IntegerField(blank=True, null=True)
 
     class Meta:

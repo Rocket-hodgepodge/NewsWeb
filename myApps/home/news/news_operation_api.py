@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
-from django.views.decorators.http import require_GET, require_http_methods
+from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from myApps.models import NewsArticle, NewsType
 
@@ -29,6 +29,8 @@ def integrated_query(request):
         type_id = request.GET.get('type')
         page = request.GET.get('page')
         rows = request.GET.get('rows')
+        order = request.GET.get('order')
+        sort = request.GET.get('sort')
         if title:
             q_title = Q(title__contains=title)
         if type_id:
@@ -41,6 +43,8 @@ def integrated_query(request):
             rows = 10
         else:
             rows = int(rows)
+        if order == 'desc':
+            sort = '-'+sort
         if q_type and q_title:
             news_set = NewsArticle.objects.filter(q_title & q_type)
         elif q_type:
@@ -50,6 +54,8 @@ def integrated_query(request):
         else:
             news_set = NewsArticle.objects.all()
         total = news_set.count()
+        if not sort == '':
+            news_set = news_set.order_by(sort)
         news_set = news_set[(rows * (page - 1)):rows * page]
     except (KeyError, TypeError):
         data['code'] = 505
@@ -62,15 +68,15 @@ def integrated_query(request):
     else:
         news_list = []
         for news_item in news_set:
-            content = news_item.content
-            if content:
-                content = content[:30] + '...'
+            # content = news_item.content
+            # if content:
+            #     content = content[:30] + '...'
             item = {
                 'id': news_item.pk,
                 'type': news_item.type.name,
                 # 'content': content,
                 'host': news_item.from_host,
-                'publish_time': news_item.publish_time,
+                'publish_time': news_item.publish_time.strftime('%Y-%m-%d %H:%M:%S'),
                 'title': news_item.title,
                 'read_total': news_item.read_total
             }
@@ -100,6 +106,31 @@ def news_all_type(request):
     return JsonResponse(data)
 
 
+@require_GET
+def get_one_news(request, news_id):
+    data = {}
+    try:
+        news_obj = NewsArticle.objects.get(pk=news_id)
+        news_dict = {
+            'id': news_obj.pk,
+            'title': news_obj.title,
+            'type': news_obj.type.name,
+            'content': news_obj.content,
+            'host': news_obj.from_host,
+            'publish_time': news_obj.publish_time.strftime('%Y-%m-%d %H:%M:%S'),
+            'read_total': news_obj.read_total
+        }
+    except NewsArticle.DoesNotExist:
+        data['code'] = 4401
+        data['msg'] = '查询的值不存在!'
+        return JsonResponse(data)
+    else:
+        data['code'] = 200
+        data['msg'] = '请求成功'
+        data['data'] = news_dict
+        return JsonResponse(data)
+
+
 def news_title_search(request):
     """
     新闻标题搜索
@@ -119,7 +150,7 @@ def news_title_search(request):
                 # Q(title__contains='abc')模糊查询带有abc的标题   Q(title__startwith='abc')以abc开头
                 news_titles = NewsArticle.objects.filter(Q(title__contains=news_title)).values('title')
                 if news_titles:
-                    contents = NewsArticle.objects.filter(Q(title__contains=news_title))\
+                    contents = NewsArticle.objects.filter(Q(title__contains=news_title)) \
                         .values('id', 'title', 'publish_time').order_by('-publish_time')
                     data['code'] = 200
                     data['msg'] = '请求成功'
@@ -131,7 +162,7 @@ def news_title_search(request):
                     return JsonResponse(data)
             else:
                 # 如果关键词为空,返回所有标题
-                contents = NewsArticle.objects.all().values('id', 'title', 'publish_time')\
+                contents = NewsArticle.objects.all().values('id', 'title', 'publish_time') \
                     .order_by('-publish_time')
                 data['code'] = 200
                 data['msg'] = '请求成功'
@@ -160,7 +191,7 @@ def news_type_search(request):
             news_type = NewsType.objects.filter(id=type_id)
             if news_type:
                 # 获取所有相关类型新闻的id title 和 publish_time
-                contents = NewsArticle.objects.filter(type=type_id)\
+                contents = NewsArticle.objects.filter(type=type_id) \
                     .values('id', 'title', 'publish_time').order_by('-publish_time')
                 data['code'] = 200
                 data['msg'] = '请求成功'
@@ -181,15 +212,16 @@ def news_type_search(request):
 
 
 @require_http_methods(['DELETE'])
-def del_news(request, n_id):
+def del_news(request, news_id):
     """
     删除新闻
+    :param news_id:
     :param request:
     :return:
     """
     data = {}
     try:
-        NewsArticle.objects.get(pk=n_id).delete()
+        NewsArticle.objects.get(pk=news_id).delete()
     except KeyError:
         data['code'] = 505
         data['msg'] = '请求参数错误!'
@@ -204,32 +236,34 @@ def del_news(request, n_id):
         return JsonResponse(data)
 
 
+@require_POST
 def alter_news(request):
     """
     修改相关新闻
     :param request:
     :return:
     """
-    if request.method == 'POST':
-        data = {}
-        try:
-            args = request.POST
-            news_id = args.get('news_id')
-            title = args.get('title')
-            publish_time = args.get('publish_time')
-            content = args.get('content')
-            from_host = args.get('from_host')
-            NewsArticle.objects.filter(id=news_id).update(title=title,
-                                                          publish_time=publish_time,
-                                                          content=content,
-                                                          from_host=from_host)
-        except KeyError:
-            data['code'] = 505
-            data['msg'] = '请求参数错误!'
-        except ObjectDoesNotExist:
-            data['code'] = 4101
-            data['msg'] = '修改失败,主键不存在!'
-        else:
-            data['code'] = 200
-            data['msg'] = '请求成功'
-            return JsonResponse(data)
+    data = {}
+    try:
+        args = request.POST
+        news_id = args.get('news_id')
+        title = args.get('title')
+        publish_time = args.get('publish_time')
+        content = args.get('content')
+        from_host = args.get('from_host')
+        read_total = args.get('read_total')
+        NewsArticle.objects.get(pk=news_id).update(title=title,
+                                                   publish_time=publish_time,
+                                                   content=content,
+                                                   from_host=from_host,
+                                                   read_total=read_total)
+    except KeyError:
+        data['code'] = 505
+        data['msg'] = '请求参数错误!'
+    except ObjectDoesNotExist:
+        data['code'] = 4101
+        data['msg'] = '修改失败,主键不存在!'
+    else:
+        data['code'] = 200
+        data['msg'] = '请求成功'
+    return JsonResponse(data)

@@ -8,3 +8,8 @@
 .edit_btn, .del_btn {
     margin: 0 5px ;
 }
+
+#edit_news_content {
+    overflow:scroll;
+    max-height:300px
+}
