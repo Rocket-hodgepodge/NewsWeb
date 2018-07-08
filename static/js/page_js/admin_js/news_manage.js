@@ -10,6 +10,10 @@ $(function () {
         keyboard: false,
         backdrop: 'static'
     });
+    $('#edit_news_content').summernote({
+        lang: 'zh-CN'
+    });
+
     // noinspection JSJQueryEfficiency
     $('#news_modal').on('hidden.bs.modal', function () {
         $('#edit_news_id').attr('placeholder', '');
