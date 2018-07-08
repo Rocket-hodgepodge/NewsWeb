@@ -11,11 +11,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>大杂烩后台管理系统-新闻管理</title>
     <!-- Bootstrap Styles-->
+    <script src="/static/js/jquery-1.11.0.js"></script>
+
+    <script src="/static/js/bootstrap.min.js"></script>
+
     <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/css/bootstrap-table.css"/>
     <!-- FontAwesome Styles-->
     <link href="/static/css/font-awesome.css" rel="stylesheet" />
     <!-- Custom Styles-->
     <link href="/static/css/custom-styles.css" rel="stylesheet" />
+
+    <link href="/static/css/admin_css/news_manage.css" rel="stylesheet">
+
+
+
+
 </head>
 <body>
     <div id="wrapper">
@@ -95,12 +106,35 @@
                     </div>
                 </div>
                 <!-- /. ROW  -->
-                <div>
+
                 	<!--
 	                	作者：1021766585@qq.com
 	                	时间：2018-07-04
 	                	描述：这里写查询条件,显示查询结果表格表格中带删除按钮,修改动态模组
 	                -->
+{#                    <div class="form-group">#}
+{#                            <label for="news_id">新闻ID:</label>#}
+{#                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">#}
+{#                    </div>#}
+                <div class="row news_control">
+                    <form id="search_form" class="form-inline" action="" method="get">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="news_title">标题:</label>
+                            <input name="title" type="text" class="form-control" id="news_title" placeholder="请输入标题关键字">
+                        </div>
+                        <div class="form-group">
+                            <label for="type_select">类型:</label>
+                            <select id="type_select" name="type" class="form-control">
+                                <option>--请选择--</option>
+                            </select>
+                        </div>
+                        <button id="search_bt" type="button" class="btn btn-default">搜索</button>
+                    </form>
+
+                    <table id="news_table" class="table table-bordered">
+
+                    </table>
                 </div>
             </div>
             <!-- /. PAGE INNER  -->
@@ -108,16 +142,35 @@
         <!-- /. PAGE WRAPPER  -->
     </div>
     <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="/static/js/jquery-1.11.0.js"></script>
-    <!-- Bootstrap Js -->
-    <script src="/static/js/bootstrap.min.js"></script>
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">新闻修改</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="test"></p>
+                    <form method="post">
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- jQuery -->
+
+
     <!-- Metis Menu Js -->
     <script src="/static/js/jquery.metisMenu.js"></script>
     <!-- Custom Js -->
     <script src="/static/js/custom-scripts.js"></script>
 
+
+    <!-- DataTables -->
+    <script src="/static/js/bootstrap-table.js"></script>
+    <script src="/static/js/locale/bootstrap-table-zh-CN.js"></script>
     <!-- 控制当前页面的js文件 -->
     <script src="/static/js/page_js/admin_js/news_manage.js"></script>
 

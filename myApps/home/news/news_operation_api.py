@@ -22,13 +22,36 @@ def news_search(request):
 @require_GET
 def integrated_query(request):
     data = {}
+    q_type = None
+    q_title = None
     try:
-        title = request.GET['title']
-        type_id = request.GET['type']
-        page = int(request.GET['page'])
-        rows = int(request.GET['rows'])
-        news_set = NewsArticle.objects.filter(title__contains=title, type_id=type_id)[(rows * (page - 1)):rows * page]
-    except KeyError:
+        title = request.GET.get('title')
+        type_id = request.GET.get('type')
+        page = request.GET.get('page')
+        rows = request.GET.get('rows')
+        if title:
+            q_title = Q(title__contains=title)
+        if type_id:
+            q_type = Q(type_id=type_id)
+        if not page:
+            page = 1
+        else:
+            page = int(page)
+        if not rows:
+            rows = 10
+        else:
+            rows = int(rows)
+        if q_type and q_title:
+            news_set = NewsArticle.objects.filter(q_title & q_type)
+        elif q_type:
+            news_set = NewsArticle.objects.filter(q_type)
+        elif q_title:
+            news_set = NewsArticle.objects.filter(q_title)
+        else:
+            news_set = NewsArticle.objects.all()
+        total = news_set.count()
+        news_set = news_set[(rows * (page - 1)):rows * page]
+    except (KeyError, TypeError):
         data['code'] = 505
         data['msg'] = '参数错误'
         return JsonResponse(data)
@@ -39,10 +62,13 @@ def integrated_query(request):
     else:
         news_list = []
         for news_item in news_set:
+            content = news_item.content
+            if content:
+                content = content[:30] + '...'
             item = {
                 'id': news_item.pk,
                 'type': news_item.type.name,
-                'content': news_item.content[:30]+'...',
+                # 'content': content,
                 'host': news_item.from_host,
                 'publish_time': news_item.publish_time,
                 'title': news_item.title,
@@ -51,9 +77,27 @@ def integrated_query(request):
             news_list.append(item)
         data['code'] = 200
         data['msg'] = '请求成功'
-        data['total'] = len(news_list)
+        data['total'] = total
         data['rows'] = news_list
         return JsonResponse(data)
+
+
+@require_GET
+def news_all_type(request):
+    all_type = NewsType.objects.all()
+    type_list = []
+    for n_type in all_type:
+        item = {
+            'id': n_type.id,
+            'name': n_type.name,
+        }
+        type_list.append(item)
+    data = {
+        'code': 200,
+        'msg': '请求成功',
+        'data': type_list
+    }
+    return JsonResponse(data)
 
 
 def news_title_search(request):
@@ -148,7 +192,7 @@ def news_type_search(request):
 
 
 @require_http_methods(['DELETE'])
-def del_news(request):
+def del_news(request, n_id):
     """
     删除新闻
     :param request:
@@ -156,8 +200,7 @@ def del_news(request):
     """
     data = {}
     try:
-        news_id = request.POST.get('')
-        NewsArticle.objects.get(pk=news_id).delete()
+        NewsArticle.objects.get(pk=n_id).delete()
     except KeyError:
         data['code'] = 505
         data['msg'] = '请求参数错误!'

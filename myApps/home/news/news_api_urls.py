@@ -9,4 +9,6 @@ urlpatterns = [
     path('news_type/', news_operation_api.news_type_search),  # 测试用
     path('newsSearch/', news_operation_api.news_search),
     path('query/', news_operation_api.integrated_query),
+    path('all_type/', news_operation_api.news_all_type),
+    path('delNews/<int:n_id>/', news_operation_api.del_news)
 ]
