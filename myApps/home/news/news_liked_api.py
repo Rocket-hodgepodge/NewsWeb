@@ -5,16 +5,14 @@ DATE:
 
 """
 from django.http.response import HttpResponse, JsonResponse
-from django.shortcuts import render
-
-from myApps.models import NewsLiked, NewsArticle
+from myApps.models import NewsLiked
 
 
 def hello_news_liked(request):
     return HttpResponse('Hello News Liked')
 
 
-def get_news_liked_num(request, news_id):
+def get_news_liked_num(request):
     """
     获取新闻点赞数
     :param request:
@@ -26,7 +24,7 @@ def get_news_liked_num(request, news_id):
             # 获取新闻id
             news_id = request.GET.get('news_id')
             # 获取新闻点赞数
-            total = NewsLiked.objects.filter(News=news_id).count()
+            total = NewsLiked.objects.filter(news=news_id).count()
         except Exception as e:
             print(e)
             data['code'] = 4021
@@ -35,7 +33,7 @@ def get_news_liked_num(request, news_id):
         else:
             data['code'] = 200
             data['msg'] = '请求成功'
-            data['total'] = int(total)
+            data['total'] = total
             return JsonResponse(data)
 
 
@@ -46,13 +44,24 @@ def news_liked(request):
     :return:
     """
     if request.method == 'GET':
-        return render(request, 'news_index.html')
-    if request.method == 'POST':
         data = {}
         try:
-            pass
+            # 获取news_id 和 user_id
+            news_id = request.GET.get('news_id')
+            user_id = request.session.get('user_id')
+            # 从NewsLiked表中查询news_id 和user_id是否同时存在于一行
+            is_news_and_use = NewsLiked.objects.filter(news=news_id, use=user_id)
+            if is_news_and_use:
+                data['code'] = 4301
+                data['msg'] = '点赞失败,已经点过赞,无法再次点赞'
+            else:
+                NewsLiked.objects.create(news=news_id, use=user_id)
+                data['code'] = 200
+                data['msg'] = '点赞成功'
         except Exception as e:
             print(e)
-            data['code'] = 4301
-            data['msg'] = '点赞失败,已经点过赞,无法再次点赞'
+            data['code'] = 400
+            data['msg'] = '服务器忙,请稍后再试'
+            return JsonResponse(data)
+        else:
             return JsonResponse(data)
