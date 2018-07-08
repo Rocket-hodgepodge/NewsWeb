@@ -2,13 +2,13 @@ $(function () {
     $.get('/admin_page/admin_count/', function (data) {
         if (data.code === 200){
             console.log(data.count_types);
-            setMyOption(data.count_types);
+            setCakeOption(data.count_types);
         } else {
             alert('数据获取失败');
         }
     });
-    var myChart = echarts.init(document.getElementById('type_count'));
-    function setMyOption(data) {
+    var cakeChart = echarts.init(document.getElementById('type_count'));
+    function setCakeOption(data) {
         var option = {
             tooltip: {
                 trigger: 'item',
@@ -42,7 +42,41 @@ $(function () {
                 }
             ]
         };
-        myChart.setOption(option);
+        cakeChart.setOption(option);
     }
+    $.get('/admin_page/admin_time/',function (data) {
+        if (data.code === 200){
+            console.log(data.datas);
+            var data1 = [];
+            var data2 = [];
+            var j = 0;
+            for (var i=data.datas.length-1; i >= 0; i--){
+                data1[j] = data.datas[i].value;
+                data2[j] = data.datas[i].name;
+                j++;
+            }
 
+            setLineOption(data1, data2);
+        } else {
+            alert('数据获取失败');
+        }
+    });
+    var lineChart = echarts.init(document.getElementById('news_count'));
+    // setLineOption();
+    function setLineOption(data1,data2) {
+        var option = {
+            xAxis: {
+                type: 'category',
+                data: data2
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: data1,
+                type: 'line'
+            }]
+        };
+        lineChart.setOption(option);
+    }
 });
