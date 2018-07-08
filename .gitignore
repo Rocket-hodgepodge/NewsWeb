@@ -104,4 +104,8 @@ venv.bak/
 .mypy_cache/
 
 # IDEA配置文件
+<<<<<<< HEAD
+.idea/
+=======
 /.idea
+>>>>>>> 0510cc42a779a25b57ce4c46da955b219abc6b81
