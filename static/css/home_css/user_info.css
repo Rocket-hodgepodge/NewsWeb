@@ -1,0 +1,36 @@
+#head_icon {
+    width: 200px;
+    height: 200px
+}
+
+p {
+    font-style: normal;
+    font-size: larger;
+}
+
+#newslist {
+    text-align: center;
+    font-size: larger;
+}
+
+p {
+    display: inline-block;
+}
+
+#info_modify input:nth-child(2) {
+    display: none;
+}
+
+
+.form-group {
+    margin-bottom: 30px;
+    text-align: center;
+}
+.form-group p {
+    font-size: 14px;
+    color: #9f9f9f;
+    font-weight: 300;
+}
+.form-group p a {
+    color: #000000;
+}
