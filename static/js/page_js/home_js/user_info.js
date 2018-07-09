@@ -17,14 +17,17 @@ $(function () {
     });
     $('#info_modify').submit(function (e) {
         e.preventDefault();
-        $(this).ajaxSubmit(function (data) {
-            if(data.code == 200){
-                info_success.show()
-            }else{
-                info_success.html('发生错误,请重试');
-                info_success.show()
-            }
-        })
+        var img = $('#file_input').val();
+        if(img){
+            $(this).ajaxSubmit(function (data) {
+                if(data.code == 200){
+                    info_success.show()
+                }else{
+                    info_success.html('发生错误,请重试');
+                    info_success.show()
+                }
+            })
+        }
     })
 });
 
@@ -54,14 +57,6 @@ $(function () {
       }
       return url ;
     }
-
-// function change() {
-//     $('p').each(function () {
-//         var value = $(this).html();
-//         console.log(value);
-//         $(this).html('<input id="name" value="' + value + '">')
-//     })
-// }
 
 
 function p_change_input() {
@@ -100,7 +95,16 @@ function blur_input() {
             data: {'nick_name': nick_name},
             headers: {'X-CSRFToken':csrf_token},
             success: function (data) {
-
+                if(data.code == 200){
+                    info_success.show()
+                }else{
+                    info_success.html('服务器忙,数据操作失败');
+                    info_success.show()
+                }
+            },
+            error: function () {
+                info_success.html('服务器忙,数据操作失败');
+                info_success.show()
             }
         })
     }
