@@ -13,3 +13,8 @@
     overflow:scroll;
     max-height:300px
 }
+#alter_info, #delete_info {
+    display: none;
+    margin: 0 5px;
+    padding: 0 20px;
+}

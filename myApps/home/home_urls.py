@@ -17,4 +17,5 @@ urlpatterns = [
     path('showNews/<int:news_id>/', home_views.show_news),
     path('userInfo/', home_views.user_info),
     path('typeCount/', home_views.get_type_count),
+    path('newsType/<int:type_id>/', home_views.news_type),
 ]
