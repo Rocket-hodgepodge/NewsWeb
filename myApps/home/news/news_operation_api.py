@@ -14,11 +14,6 @@ def hello_news_operation(request):
     return HttpResponse('Hello News Operation')
 
 
-def news_search(request):
-    if request.method == 'GET':
-        return render(request, 'home/news_search.html')
-
-
 @require_GET
 def integrated_query(request):
     data = {}
