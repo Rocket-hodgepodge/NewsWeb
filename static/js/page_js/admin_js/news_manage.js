@@ -206,11 +206,24 @@ $(function () {
         console.log(publish_time);
         console.log(read_total);
         console.log(content);
-        // $.ajax('/news/alterNews/', {
-        //
-        //     method: 'POST',
-        //     headers: {"X-CSRFtoken": csrf},
-        // })
+        $.ajax('/news/alterNews/', {
+            method: 'POST',
+            data: {
+                'news_id': new_id,
+                'title': title,
+                'type_id': type_id,
+                'from_host': host,
+                'publish_time': publish_time,
+                'content': content,
+                'read_total': read_total
+            },
+            headers: {"X-CSRFtoken": csrf},
+            success: function (data,status) {
+                if (data.code === 200){
+                    alert('请求成功!')
+                }
+            }
+        });
     });
 
     function getCurrentTime() {

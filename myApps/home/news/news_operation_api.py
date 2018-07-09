@@ -1,6 +1,8 @@
 """
 新闻操作模块
 """
+from datetime import datetime
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.shortcuts import render
@@ -110,8 +112,9 @@ def news_all_type(request):
 def get_one_news(request, news_id):
     data = {}
     try:
+        # 通过pk主键获取新闻文章
         news_obj = NewsArticle.objects.get(pk=news_id)
-        news_dict = {
+        news_dict = {  # 封装数据
             'id': news_obj.pk,
             'title': news_obj.title,
             'type': news_obj.type.name,
@@ -248,15 +251,19 @@ def alter_news(request):
         args = request.POST
         news_id = args.get('news_id')
         title = args.get('title')
+        type_id = args.get('type_id')
         publish_time = args.get('publish_time')
         content = args.get('content')
         from_host = args.get('from_host')
         read_total = args.get('read_total')
-        NewsArticle.objects.get(pk=news_id).update(title=title,
-                                                   publish_time=publish_time,
-                                                   content=content,
-                                                   from_host=from_host,
-                                                   read_total=read_total)
+        news_obj = NewsArticle.objects.get(pk=news_id)
+        news_obj.title = title
+        news_obj.type_id = type_id
+        news_obj.publish_time = datetime.strptime(publish_time, '%Y-%m-%d %H:%M:%S')
+        news_obj.content = content
+        news_obj.from_host = from_host
+        news_obj.read_total = read_total
+        news_obj.save()
     except KeyError:
         data['code'] = 505
         data['msg'] = '请求参数错误!'
