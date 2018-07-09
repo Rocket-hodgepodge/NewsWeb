@@ -9,7 +9,12 @@ urlpatterns = [
     path('news_liked_num/', news_liked_api.get_news_liked_num),  # 测试用
     path('news_search/', news_operation_api.news_title_search),  # 测试用
     path('news_type/', news_operation_api.news_type_search),  # 测试用
+
+    path('newsSearch/', news_operation_api.news_search),
+    path('alterNews/', news_operation_api.alter_news),
+
     path('query/', news_operation_api.integrated_query),
-    path('del_news/', news_operation_api.del_news),
-    path('alter_news/', news_operation_api.alter_news),
+    path('all_type/', news_operation_api.news_all_type),
+    path('delNews/<int:news_id>/', news_operation_api.del_news),
+    path('getOneNews/<int:news_id>/', news_operation_api.get_one_news),
 ]

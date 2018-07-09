@@ -93,11 +93,10 @@ def news(request):
     return render(request, 'home/news.html')
 
 
-def news_search(request, news_id):
+def news_search(request):
     """
     前台新闻模糊查询
     :param request: 请求对象
-    :param news_id: 新闻的ID
     :return:
     """
     return render(request, 'home/news_search.html')
