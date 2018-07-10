@@ -173,7 +173,7 @@ $(function () {
                 let csrf = $("input[name='csrfmiddlewaretoken']").val();
                 console.log(csrf);
                 $.ajax('/news/delNews/' + n_id + '/', {
-                    method: 'DELETE',
+                    type: 'DELETE',
                     headers: {"X-CSRFtoken": csrf},
                     success: function (data) {
                         if (data.code === 200) {
