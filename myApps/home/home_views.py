@@ -157,7 +157,7 @@ def get_type_count(request):
         follow_list = []
     else:
         follow_set = User.objects.get(pk=user_id).follow_type.values_list('id').all()
-        print(follow_set)
+        # print(follow_set)
         follow_list = [x[0] for x in follow_set]
     type_query = NewsArticle.objects.values_list('type_id').annotate(Count('type_id'))
     for x in type_query:

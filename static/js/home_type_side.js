@@ -49,7 +49,9 @@ $(function () {
                         btn_obj.attr('class', 'btn is_follow_1 btn-default btn-xs').html('取消关注');
                         setEventListener();
                     } else if(data.code === 300){
-                        if () 
+                        if(confirm('您未登录是否跳转到登录页面！')){
+                            window.location.href = '/user_operation/login/';
+                        }
                     } else {
                         alert(data.msg);
                     }

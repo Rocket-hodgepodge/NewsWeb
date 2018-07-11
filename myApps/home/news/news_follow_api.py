@@ -1,8 +1,14 @@
+"""
+用户关注类型接口，获取相关关注的新闻咨询接口
+AUTH: TTC
+DATE: 2018.7.11 17：35
+
+"""
 from django import db
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST, require_http_methods
 
-from myApps.models import User, UserFollowRel, NewsType
+from myApps.models import User, UserFollowRel, NewsType, NewsArticle
 from myApps.untils.wrapper_set import is_login_api
 
 
@@ -56,3 +62,33 @@ def remove_follow_type(request, type_id):
         data['code'] = 200
         data['msg'] = '请求成功'
         return JsonResponse(data)
+
+
+def get_news_with_follow(request):
+    data = {}
+    user_id = request.session.get('user_id', None)
+    try:
+        if not user_id:
+            news_set = NewsArticle.objects.all()[:30]
+        else:
+            user = User.objects.get(pk=user_id)
+            follow_set = user.follow_type.all()
+            follow_list = [x.id for x in follow_set]
+            news_set = NewsArticle.objects.filter(type_id__in=follow_list).order_by('-publish_time')[:30]
+    except db.Error:
+        data['code'] = 400
+        data['msg'] = '服务器忙,请稍后再试'
+        return JsonResponse(data)
+    news_list = []
+    for news in news_set:
+        item = {
+            'id': news.id,
+            'title': news.title,
+            'type': news.type.name,
+            'publish_time': news.publish_time.strftime('%Y-%m-%d')
+        }
+        news_list.append(item)
+    data['code'] = 200
+    data['msg'] = '请求成功'
+    data['news_list'] = news_list
+    return JsonResponse(data)
