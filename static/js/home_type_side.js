@@ -42,12 +42,14 @@ $(function () {
                 headers: {"X-CSRFtoken": csrf},
                 data: {type_id: type_id},
                 success: function (data) {
-                    if (data.code === 200){
+                    if (data.code === 200) {
                         // alert(data.msg);
-                        let btn_obj = $("button[t_id='"+type_id+"']");
+                        let btn_obj = $("button[t_id='" + type_id + "']");
                         btn_obj.unbind('click');
                         btn_obj.attr('class', 'btn is_follow_1 btn-default btn-xs').html('取消关注');
                         setEventListener();
+                    } else if(data.code === 300){
+                        if () 
                     } else {
                         alert(data.msg);
                     }
@@ -61,20 +63,23 @@ $(function () {
                 type: 'DELETE',
                 headers: {"X-CSRFtoken": csrf},
                 success: function (data) {
-                    if (data.code === 200){
+                    if (data.code === 200) {
                         // alert(data.msg);
                         // console.log()
                         // e.attr('class', 'btn is_follow_0 btn-success btn-xs').html('关注');
-                        let btn_obj = $("button[t_id='"+type_id+"']");
+                        let btn_obj = $("button[t_id='" + type_id + "']");
                         btn_obj.unbind('click');
                         btn_obj.attr('class', 'btn is_follow_0 btn-success btn-xs').html('关注');
                         setEventListener();
+                    } else if (data.code === 300){
+                        if (confirm('你暂未登录,是否跳转到登录页面!')){
+                            window.location.href = '/admin/user_operation/login/'
+                        }
                     } else {
                         alert(data.msg)
                     }
                 }
             })
         })
-
     }
 });

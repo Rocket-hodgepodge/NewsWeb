@@ -7,14 +7,10 @@ from myApps.untils.wrapper_set import is_login_api
 
 
 @require_POST
+@is_login_api
 def add_follow_type(request):
     data = {}
-    try:
-        user_id = request.session['user_id']
-    except KeyError:
-        data['code'] = 300
-        data['msg'] = '未登录'
-        return JsonResponse(data)
+    user_id = request.session['user_id']
     type_id = request.POST.get('type_id', None)
     if not type_id:
         data['code'] = 505

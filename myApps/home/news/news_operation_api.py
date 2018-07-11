@@ -3,13 +3,15 @@
 """
 from datetime import datetime
 
+from django import db
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
-from myApps.models import NewsArticle, NewsType
+from myApps.models import NewsArticle, NewsType, UserFollowRel
+from myApps.untils.wrapper_set import is_login_api
 
 
 def hello_news_operation(request):
@@ -46,7 +48,7 @@ def integrated_query(request):
         else:
             rows = int(rows)
         if order == 'desc':
-            sort = '-'+sort
+            sort = '-' + sort
         if q_type and q_title:
             news_set = NewsArticle.objects.filter(q_title & q_type)
         elif q_type:
@@ -273,4 +275,31 @@ def alter_news(request):
     else:
         data['code'] = 200
         data['msg'] = '请求成功'
+    return JsonResponse(data)
+
+
+@is_login_api
+def get_news_with_follow(request):
+    data = {}
+    user = request.session.get('user_id', None)
+    try:
+        follow_set = user.follow_type.value_list('id').all()
+        follow_list = [x[0] for x in follow_set]
+        news_set = NewsArticle.objects.filter(type_id__in=follow_list).order_by('-publish_time')[:30]
+    except db.Error:
+        data['code'] = 400
+        data['msg'] = '服务器忙,请稍后再试'
+        return JsonResponse(data)
+    news_list = []
+    for news in news_set:
+        item = {
+            'id': news.id,
+            'title': news.title,
+            'type': news.type.name,
+            'publish_time': news.publish_time
+        }
+        news_list.append(item)
+    data['code'] = 200
+    data['msg'] = '请求成功'
+    data['news_list'] = news_list
     return JsonResponse(data)
