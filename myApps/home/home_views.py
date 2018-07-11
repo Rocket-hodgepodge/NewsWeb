@@ -3,6 +3,7 @@
 AUTH: TTC
 DATE: 2018年7月6日 01:47:14
 """
+from django import db
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
 from django.shortcuts import render

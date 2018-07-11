@@ -280,6 +280,12 @@ def alter_news(request):
 
 @is_login_api
 def get_news_with_follow(request):
+    """
+    获取用户关注类型的前30条，未登录300未登录
+
+    :param request: 请求对象
+    :return: Json数据
+    """
     data = {}
     user = request.session.get('user_id', None)
     try:
@@ -297,6 +303,35 @@ def get_news_with_follow(request):
             'title': news.title,
             'type': news.type.name,
             'publish_time': news.publish_time
+        }
+        news_list.append(item)
+    data['code'] = 200
+    data['msg'] = '请求成功'
+    data['news_list'] = news_list
+    return JsonResponse(data)
+
+
+@require_GET
+def get_news_order_time(request):
+    """
+    获取根据时间排序的新闻文章
+    :return: Json数据
+    """
+    data = {}
+    page = request.GET.get('page', 1)
+    try:
+        page = int(page)
+        news_set = NewsArticle.objects.all().order_by('-publish_time')[(page - 1) * 20: page * 20]
+    except db.Error:
+        data['code'] = 400
+        data['msg'] = '服务器忙，请稍后再试'
+        return JsonResponse(data)
+    news_list = []
+    for news_obj in news_set:
+        item = {
+            'id': news_obj.id,
+            'title': news_obj.title,
+            'publish_time': news_obj.publish_time.strftime('%Y-%m-%d')
         }
         news_list.append(item)
     data['code'] = 200

@@ -3,16 +3,17 @@
 <head>
     <meta charset="utf-8"/>
     <title>最新资讯榜-大杂烩新闻网站</title>
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/metinfo.css"/>
     <link rel='stylesheet' type='text/css' href='/static/css/css.css'/>
     <link rel="stylesheet" type="text/css" href="/static/css/flip.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/home_css/news.css"/>
-    <script src="/static/js/jquery_3.3.1_jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/page.css">
     <script src="/static/js/jQuery1.7.2.js" type="text/javascript"></script>
     <script src="/static/js/ch.js" type="text/javascript"></script>
     <script src='/static/js/jquery.bxSlider.min.js'></script>
+
 
 </head>
 <body>
@@ -95,29 +96,12 @@
                 时间：2018-07-05
                 描述：ul中的数据加载,template,和js都可以
             -->
-            <ul class='list-none metlist'>
-                <li class='list'>
-                    <span>[2012-07-17]</span>
-                    <a href='shownews.html' title='如何选择网站关键词?' target='_self'>如何选择网站关键词?</a>
-                    <img class='listhot' src='/static/img/home_img/new_ico.png' alt='图片关键词'/>
-                </li>
-                <li class='list '>
-                    <span>[2012-07-16]</span>
-                    <a href='shownews.html' title='新手使用MetInfo建站步骤' target='_self'>新手使用MetInfo建站步骤</a>
-                    <img class='listhot' src='/static/img/home_img/new_ico.png' alt='图片关键词'/>
-                </li>
+            <ul id="news_list" class='list-none metlist'>
 
-                <div id="flip">
-                    <div class='digg4 metpager_8'>
-                        <span class='disabled disabledfy'><b>«</b></span>
-                        <span class='disabled disabledfy'>‹</span>
-                        <span class='current'>1</span>
-                        <span class='disabled disabledfy'>›</span>
-                        <span class='disabled disabledfy'><b>»</b></span>
-                    </div>
-                </div>
             </ul>
+
         </div>
+        <div class="box" id="page_box"></div>
     </div>
     <div class="clear"></div>
 </div>
@@ -132,7 +116,10 @@
 </footer>
 
 <script src="/static/js/fun.inc.js" type="text/javascript"></script>
+<script src="/static/js/jquery-1.11.0.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/home_type_side.js"></script>
+<script src="/static/js/page.js"></script>
 <script src="/static/js/page_js/home_js/news.js"></script>
 
 </body>
