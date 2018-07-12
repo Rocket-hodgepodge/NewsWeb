@@ -162,6 +162,7 @@ $(function () {
         var option = {
             xAxis: {
                 type: 'category',
+                boundaryGap: false,
                 data: name,
             },
             yAxis: {
@@ -172,11 +173,12 @@ $(function () {
                 x: 'center'
             },
             series: [{
-                data:value,
+                data: value,
                 type: 'line',
-                smooth: true
+                areaStyle: {}
             }]
         };
+
         numberChart.setOption(option);
     }
 });
