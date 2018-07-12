@@ -20,6 +20,24 @@
     <link href="/static/css/admin_css/index.css" rel="stylesheet"/>
 
 </head>
+<style>
+    .big-box {
+        width: 1010px;
+        height: 650px;
+        margin: 0;
+        padding: 0;
+    }
+    .small-box {
+        width: 500px;
+        height: 320px;
+        position: relative;
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+    }
+
+</style>
+
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
@@ -104,8 +122,14 @@
                         时间：2018-07-04
                         描述：这里写报表控件
                     -->
-                    <div id="type_count" style="width: 600px;height:400px;"></div>
-                    <div id="news_count" style="width: 600px;height:400px;"></div>
+
+                    <div class="big-box">
+                        <div class="small-box" id="type_count"></div>
+                        <div class="small-box" id="news_count" ></div>
+                        <div class="small-box" id ="active_user"></div>
+                        <div class="small-box" id="web_user"></div>
+                    </div>
+
                 </div>
             </div>
             <!-- /. PAGE INNER  -->
