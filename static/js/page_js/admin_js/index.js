@@ -14,9 +14,13 @@ $(function () {
                 trigger: 'item',
                 formatter: "{a} <br/>{b}: {c} ({d}%)"
             },
+            title: {
+                text: '新闻类型占比',
+                x: 'center'
+            },
             series: [
                 {
-                    name:'访问来源',
+                    name:'新闻类型',
                     type:'pie',
                     radius: ['50%', '70%'],
                     avoidLabelOverlap: false,
@@ -72,6 +76,10 @@ $(function () {
             yAxis: {
                 type: 'value'
             },
+            title: {
+                text: '近五日新闻数量',
+                x: 'center'
+            },
             series: [{
                 data: data1,
                 type: 'line'
@@ -79,4 +87,12 @@ $(function () {
         };
         lineChart.setOption(option);
     }
+    $.get('admin_page/admin_users/',function (j) {
+        if (j.code == 200){
+            console.log(j.activate_user)
+        }
+
+
+
+    })
 });

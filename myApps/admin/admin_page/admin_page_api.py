@@ -54,6 +54,20 @@ def count_news(request):
     return JsonResponse(data)
 
 
+def active_user(request):
+    cursor = connection.cursor()
+    cursor.execute("SELECT User.name,User.Last_login_time FROM User")
+    b = cursor.fetchall()
+    today = datetime.today().date()
+    # j = 0
+    # for _ in range(len(b)):
+    #     if b[_][2] == today:
+    #         j += 1
+    #
+    # return JsonResponse(j)
+    print(today)
+    print(b)
+    return JsonResponse('123')
 
 
 
