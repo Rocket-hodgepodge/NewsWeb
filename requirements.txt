@@ -3,3 +3,4 @@ django-redis-sessions
 pymysql
 pillow
 redis
+qiniu
