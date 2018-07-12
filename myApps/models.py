@@ -14,7 +14,7 @@ class NewsArticle(models.Model):
     publish_time = models.DateTimeField(db_column='Publish_time', blank=True, null=True)  # Field name made lowercase.
     content = models.TextField(blank=True, null=True)
     from_host = models.CharField(max_length=128, blank=True, null=True)
-    read_total = models.IntegerField(blank=True, null=True)
+    read_total = models.IntegerField(blank=True, null=False, default=0)
 
     class Meta:
         managed = False
@@ -48,8 +48,8 @@ class Permission(models.Model):
 
 class Review(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    use = models.ForeignKey('User', models.DO_NOTHING, db_column='Use_id', blank=True, null=True)  # Field name made lowercase.
-    news = models.ForeignKey(NewsArticle, models.DO_NOTHING, db_column='News_id', blank=True, null=True)  # Field name made lowercase.
+    use = models.ForeignKey('User',  db_column='Use_id', blank=True, null=False, on_delete=models.CASCADE)  # Field name made lowercase.
+    news = models.ForeignKey(NewsArticle, db_column='News_id',  blank=True, null=False, on_delete=models.CASCADE)  # Field name made lowercase.
     rev_content = models.CharField(db_column='Rev_content', max_length=256, blank=True, null=True)  # Field name made lowercase.
     create_time = models.DateTimeField(db_column='create_time', auto_now_add=True)  # Field name made lowercase.
 
@@ -60,8 +60,8 @@ class Review(models.Model):
 
 class ReviewLiked(models.Model):
     r_liked_id = models.AutoField(db_column='R_liked_id', primary_key=True)  # Field name made lowercase.
-    id = models.ForeignKey(Review, models.DO_NOTHING, db_column='ID', blank=True, null=True)  # Field name made lowercase.
-    use = models.ForeignKey('User', models.DO_NOTHING, db_column='Use_id', blank=True, null=True)  # Field name made lowercase.
+    id = models.ForeignKey(Review, db_column='ID', blank=True, null=True, on_delete=models.CASCADE)  # Field name made lowercase.
+    use = models.ForeignKey('User', db_column='Use_id', blank=True, null=True, on_delete=models.CASCADE)  # Field name made lowercase.
     is_liked = models.IntegerField(blank=True, null=True)
 
     class Meta:
