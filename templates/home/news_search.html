@@ -8,6 +8,7 @@
     <link rel='stylesheet' type='text/css' href='/static/css/css.css'/>
     <link rel="stylesheet" type="text/css" href="/static/css/flip.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/home_css/news_search.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/page.css"/>
     <script src="/static/js/jquery_3.3.1_jquery.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/jQuery1.7.2.js" type="text/javascript"></script>
@@ -87,13 +88,13 @@
             时间：2018-07-05
             描述：查询的form表单的action需要填写
         -->
-        <form id="search_form" action="" method="get" class="form-inline">
+        <form id="search_form" action="" class="form-inline">
             <div class="form-group ">
                 <label for="search_input">新闻标题:</label>
                 <input type="text" name="title" class="form-control" id="search_input" placeholder="搜索的内容...">
             </div>
             <div class="form-group ">
-                <button type="submit" class="btn btn-default">搜索</button>
+                <button id="search_btn" type="button" class="btn btn-default">搜索</button>
             </div>
         </form>
         <div class="active" id="newslist">
@@ -102,29 +103,11 @@
                 时间：2018-07-05
                 描述：ul中的数据通过
             -->
-            <ul class='list-none metlist'>
-                <li class='list'>
-                    <span>[2012-07-17]</span>
-                    <a href='shownews.html' title='如何选择网站关键词?' target='_self'>如何选择网站关键词?</a>
-                    <img class='listhot' src='/static/img/home_img/hot.gif' alt='图片关键词'/>
-                </li>
-                <li class='list '>
-                    <span>[2012-07-16]</span>
-                    <a href='shownews.html' title='新手使用MetInfo建站步骤' target='_self'>新手使用MetInfo建站步骤</a>
-                    <img class='listhot' src='/static/img/home_img/hot.gif' alt='图片关键词'/>
-                </li>
+            <ul id="news_list" class='list-none metlist'>
 
-                <div id="flip">
-                    <div class='digg4 metpager_8'>
-                        <span class='disabled disabledfy'><b>«</b></span>
-                        <span class='disabled disabledfy'>‹</span>
-                        <span class='current'>1</span>
-                        <span class='disabled disabledfy'>›</span>
-                        <span class='disabled disabledfy'><b>»</b></span>
-                    </div>
-                </div>
             </ul>
         </div>
+        <div class="box" id="page_box"></div>
     </div>
     <div class="clear"></div>
 </div>
@@ -139,6 +122,7 @@
 
 <script src="/static/js/fun.inc.js" type="text/javascript"></script>
 <script src="/static/js/home_type_side.js"></script>
+<script src="/static/js/page.js"></script>
 <script src="/static/js/page_js/home_js/news_search.js"></script>
 
 </body>

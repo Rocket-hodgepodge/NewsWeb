@@ -18,11 +18,6 @@ def hello_news_operation(request):
     return HttpResponse('Hello News Operation')
 
 
-def news_search(request):
-    if request.method == 'GET':
-        return render(request, 'home/news_search.html')
-
-
 @require_GET
 def integrated_query(request):
     data = {}
@@ -150,13 +145,14 @@ def news_title_search(request):
         try:
             # 获取新闻标题关键词
             news_title = request.GET.get('title')
+            page = int(request.GET.get('page',1))
             if news_title:
                 # 如果有关键词,从数据库标题双向模糊查询,获取所有相关标题及id和publish_time
                 # Q(title__contains='abc')模糊查询带有abc的标题   Q(title__startwith='abc')以abc开头
                 news_titles = NewsArticle.objects.filter(Q(title__contains=news_title)).values('title')
                 if news_titles:
                     contents = NewsArticle.objects.filter(Q(title__contains=news_title)) \
-                        .values('id', 'title', 'publish_time').order_by('-publish_time')
+                        .values('id', 'title', 'publish_time').order_by('-publish_time')[(page - 1) * 20: page * 20]
                     data['code'] = 200
                     data['msg'] = '请求成功'
                 else:
@@ -168,7 +164,7 @@ def news_title_search(request):
             else:
                 # 如果关键词为空,返回所有标题
                 contents = NewsArticle.objects.all().values('id', 'title', 'publish_time') \
-                    .order_by('-publish_time')
+                    .order_by('-publish_time')[(page - 1) * 20: page * 20]
                 data['code'] = 200
                 data['msg'] = '请求成功'
         except Exception as e:
