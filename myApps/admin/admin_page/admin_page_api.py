@@ -1,18 +1,13 @@
 """
 后台首页
-AUTH:
-DATA:
+AUTH: 任麒霖
+DATA: 2018-07-02
 """
 from datetime import datetime, timedelta
-from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
 from django.db import connection
 from myApps.models import NewsArticle,User
 from myApps.untils.access_statistics import RedisControl
-
-
-
-
 
 
 def hello_admin_page(request):
@@ -22,7 +17,8 @@ def hello_admin_page(request):
 def count_types(request):
     # request.session
     cursor = connection.cursor()
-    cursor.execute('Select count(a.id) total, b.name from News_article a right join News_type b on b.id=a.type_id group by type_id;')
+    cursor.execute('Select count(a.id) total, b.name from News_article a right'
+                   ' join News_type b on b.id=a.type_id group by type_id;')
     a = cursor.fetchall()
     news_list = []
     for i in range(len(a)):
@@ -100,11 +96,3 @@ def web_user(request):
         'value': value_list[::-1],
     }
     return JsonResponse(data)
-
-
-
-
-
-
-
-
