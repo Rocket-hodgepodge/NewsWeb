@@ -92,6 +92,7 @@ def web_user(request):
         value = control.get_access_total(date_str)
         value_list.append(value)
         my_date -= timedelta(days=1)
+
     data = {
         'code': 200,
         'msg': 'ok',
