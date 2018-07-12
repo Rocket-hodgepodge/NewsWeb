@@ -17,3 +17,9 @@ git checkout ren
 
 6 查询状态
 git merge master
+
+7 查看所有分支
+git branch --all
+
+7 合并
+git merge 
