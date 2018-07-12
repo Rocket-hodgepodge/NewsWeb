@@ -135,7 +135,7 @@ def icon_modify(request):
         try:
             file = request.FILES.get('file')
             file_ex = file.name.split('.')[-1]
-            media_dir = os.path.join(os.path.join(BASE_DIR, 'static\media'), 'image.' + file_ex)
+            media_dir = os.path.join(os.path.join(BASE_DIR, 'static/media'), 'image.' + file_ex)
             with open(media_dir, 'wb') as f:
                 for chunk in file.chunks():
                     f.write(chunk)
