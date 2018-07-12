@@ -6,7 +6,6 @@ DATE: 2018年7月5日 09:49:38
 
 from functools import wraps
 
-from redis import RedisError
 from django.http.response import HttpResponseRedirect, JsonResponse
 
 from myApps.untils.access_statistics import StatisticsThread
@@ -63,7 +62,7 @@ def access_total(fn):
     """
     @wraps(fn)
     def wrapper(request, *args, **kwargs):
-        StatisticsThread().start()
+        StatisticsThread().start()  # 启动子线程进行统计
         return fn(request, *args, **kwargs)
 
     return wrapper

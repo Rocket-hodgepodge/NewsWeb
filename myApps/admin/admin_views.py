@@ -8,6 +8,7 @@ DATE: 2018年7月5日 02:12:57
 
 from django.shortcuts import render
 
+from myApps.models import Role
 from myApps.untils.wrapper_set import is_login
 
 
