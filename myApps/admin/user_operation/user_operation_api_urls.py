@@ -8,5 +8,6 @@ urlpatterns = [
     path('verify/<int:v_random>/', user_operation_api.set_verify),
     path('register/', user_operation_api.register),
     path('logout/', user_operation_api.logout),
+    path('icon_modify/', user_operation_api.icon_modify),
     path('info_modify/', user_operation_api.info_modify)
 ]
