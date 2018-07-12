@@ -5,7 +5,11 @@ DATE: 2018年7月5日 09:49:38
 """
 
 from functools import wraps
+
+from redis import RedisError
 from django.http.response import HttpResponseRedirect, JsonResponse
+
+from myApps.untils.access_statistics import StatisticsThread
 
 
 def is_login(fn):
@@ -37,14 +41,29 @@ def is_login_api(fn):
     :param fn: 需要判断的方法
     :return: 返回状态码为300的JSON数据
     """
+
     @wraps(fn)
     def wrapper(request, *args, **kwargs):
         try:
             request.session['user_id']
-        except KeyError as e:
+        except KeyError:
             data = {'code': 300, 'msg': '未登录,无法访问'}
             return JsonResponse(data)
         else:
             return fn(request, *args, **kwargs)
+
+    return wrapper
+
+
+def access_total(fn):
+    """
+    访问量统计模块
+    :param fn: 需要进行访问统计的方法
+    :return:
+    """
+    @wraps(fn)
+    def wrapper(request, *args, **kwargs):
+        StatisticsThread().start()
+        return fn(request, *args, **kwargs)
 
     return wrapper

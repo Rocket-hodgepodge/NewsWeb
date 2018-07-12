@@ -3,19 +3,19 @@
 AUTH: TTC
 DATE: 2018年7月6日 01:47:14
 """
-from django import db
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
-from django.db import connection
-from myApps.models import NewsArticle, User, NewsType, UserFollowRel
+from myApps.models import NewsArticle, User, NewsType
+from myApps.untils.wrapper_set import access_total
 
 
 def hello_world(request):
     return HttpResponse('hello world!')
 
 
+@access_total
 def index(request):
     """
     前台首页
@@ -47,6 +47,7 @@ def index(request):
                                                        'newss_info': newss_info})
 
 
+@access_total
 def get_one_last_info(type_str):
     """
     获取相关类型最新的资讯信息
@@ -60,6 +61,7 @@ def get_one_last_info(type_str):
     return item
 
 
+@access_total
 def encapsulation_data(query_set):
     """
     封装查询结果的方法
@@ -76,6 +78,7 @@ def encapsulation_data(query_set):
     return news_list
 
 
+@access_total
 def hot_news(request):
     """
     前台最热资讯榜
@@ -85,6 +88,7 @@ def hot_news(request):
     return render(request, 'home/hot_news.html')
 
 
+@access_total
 def news(request):
     """
     前台最新资讯榜
@@ -94,6 +98,7 @@ def news(request):
     return render(request, 'home/news.html')
 
 
+@access_total
 def news_search(request):
     """
     前台新闻模糊查询
@@ -103,6 +108,7 @@ def news_search(request):
     return render(request, 'home/news_search.html')
 
 
+@access_total
 def show_news(request, news_id):
     """
     前台单条新闻展示页面
@@ -126,6 +132,7 @@ def show_news(request, news_id):
     return render(request, 'home/show_news.html', {'data': data})
 
 
+@access_total
 def user_info(request):
     """
     前台用户信息页面,可修改用户信息
@@ -135,6 +142,7 @@ def user_info(request):
     return render(request, 'home/user_info.html')
 
 
+@access_total
 def news_type(request, type_id):
     """
     新闻类型分类页面
@@ -144,6 +152,7 @@ def news_type(request, type_id):
     return render(request, 'home/type_news.html')
 
 
+@access_total
 def get_type_count(request):
     """
     前台左边新闻分类
