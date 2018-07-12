@@ -18,5 +18,5 @@ urlpatterns = [
     path('addFollow/', news_follow_api.add_follow_type),
     path('rmFollow/<int:type_id>/', news_follow_api.remove_follow_type),
     path('getFollowNews/', news_follow_api.get_news_with_follow),
-    path('getNewsByTime/', news_operation_api.get_news_order_time),
+    path('getNewsOrder/', news_operation_api.get_news_order),
 ]

@@ -312,16 +312,18 @@ def get_news_with_follow(request):
 
 
 @require_GET
-def get_news_order_time(request):
+def get_news_order(request):
     """
     获取根据时间排序的新闻文章
+    ：:param request: 请求对象
     :return: Json数据
     """
     data = {}
     page = request.GET.get('page', 1)
+    order = request.GET.get('order', '-publish_time')
     try:
         page = int(page)
-        news_set = NewsArticle.objects.all().order_by('-publish_time')[(page - 1) * 20: page * 20]
+        news_set = NewsArticle.objects.all().order_by(order)[(page - 1) * 20: page * 20]
     except db.Error:
         data['code'] = 400
         data['msg'] = '服务器忙，请稍后再试'

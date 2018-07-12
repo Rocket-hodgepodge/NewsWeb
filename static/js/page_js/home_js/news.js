@@ -10,7 +10,7 @@ $(function () {
     });
     // $('#page_box').simplePaging();
     function getNewsList(page) {
-        $.get('/news/getNewsByTime/?page='+page, function (data) {
+        $.get('/news/getNewsOrder/?page='+page+'&order=-publish_time', function (data) {
             let news_list = data.news_list;
             let htmlstr = "";
             for (let i=0; i < news_list.length; i++){
@@ -18,9 +18,9 @@ $(function () {
                     "<span>["+news_list[i].publish_time+"]</span>" +
                     "<a href='/news/showNows/"+news_list[i].id+"/' title='"+news_list[i].title+"' target='_self'>"+news_list[i].title+"</a>" +
                     "<img class='listhot' src='/static/img/home_img/new_ico.png' alt='图片关键词'/>\n" +
-                    "</li>"
+                    "</li>";
             }
-            $('#news_list').html(htmlstr)
+            $('#news_list').html(htmlstr);
         })
     }
 });
