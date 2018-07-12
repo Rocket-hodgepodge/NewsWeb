@@ -172,6 +172,7 @@ $(function () {
                 text: '近五日网站访问量',
                 x: 'center'
             },
+
             series: [{
                 data: value,
                 type: 'line',
