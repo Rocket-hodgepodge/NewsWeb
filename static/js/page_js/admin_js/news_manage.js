@@ -78,7 +78,6 @@ $(function () {
 
         }
     });
-    var newsobj = {};
 
     /**
      * 表格查询的参数
@@ -153,7 +152,7 @@ $(function () {
             $('#edit_news_id').attr('placeholder', n_id);
             $.get('/news/getOneNews/' + n_id + '/', function (data) {
                 if (data.code === 200) {
-                    newsobj = data.data;
+                    var newsobj = data.data;
                     $('#edit_news_id').attr('placeholder', newsobj.id);
                     $('#edit_news_title').val(newsobj.title);
                     $('#edit_news_type').val(newsobj.type);
@@ -174,11 +173,14 @@ $(function () {
                 let csrf = $("input[name='csrfmiddlewaretoken']").val();
                 console.log(csrf);
                 $.ajax('/news/delNews/' + n_id + '/', {
-                    method: 'DELETE',
+                    type: 'DELETE',
                     headers: {"X-CSRFtoken": csrf},
                     success: function (data) {
                         if (data.code === 200) {
-                            alert('删除成功');
+                            $('#delete_info').show();
+                            setTimeout(function () {
+                                $('#delete_info').hide();
+                            }, 3000);
                             refresh_table();
                         } else {
                             alert('删除失败');
@@ -198,14 +200,6 @@ $(function () {
         let publish_time = $('#edit_news_time').val();
         let read_total = $('#edit_news_rTotal').val();
         let content = $('#edit_news_content').summernote('code');
-        console.log(csrf);
-        console.log(new_id);
-        console.log(title);
-        console.log(type_id);
-        console.log(host);
-        console.log(publish_time);
-        console.log(read_total);
-        console.log(content);
         $.ajax('/news/alterNews/', {
             method: 'POST',
             data: {
@@ -220,7 +214,13 @@ $(function () {
             headers: {"X-CSRFtoken": csrf},
             success: function (data,status) {
                 if (data.code === 200){
-                    alert('请求成功!')
+                    $('#news_modal').modal('hide');
+                    $('#alter_info').show();
+                    setTimeout(function () {
+                        $('#alter_info').hide();
+                    }, 3000);
+                }else {
+                    alert('修改失败');
                 }
             }
         });

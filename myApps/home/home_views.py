@@ -3,12 +3,13 @@
 AUTH: TTC
 DATE: 2018年7月6日 01:47:14
 """
+from django import db
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
 from django.shortcuts import render
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.db import connection
-from myApps.models import NewsArticle, User, NewsType
+from myApps.models import NewsArticle, User, NewsType, UserFollowRel
 
 
 def hello_world(request):
@@ -134,6 +135,15 @@ def user_info(request):
     return render(request, 'home/user_info.html')
 
 
+def news_type(request, type_id):
+    """
+    新闻类型分类页面
+    :param request:
+    :return:
+    """
+    return render(request, 'home/type_news.html')
+
+
 def get_type_count(request):
     """
     前台左边新闻分类
@@ -142,17 +152,25 @@ def get_type_count(request):
     """
     data = {}
     type_list = []
+    try:
+        user_id = request.session['user_id']
+    except KeyError:
+        follow_list = []
+    else:
+        follow_set = User.objects.get(pk=user_id).follow_type.values_list('id').all()
+        # print(follow_set)
+        follow_list = [x[0] for x in follow_set]
     type_query = NewsArticle.objects.values_list('type_id').annotate(Count('type_id'))
-    print(type_query)
     for x in type_query:
-        type_item = NewsType.objects.values_list('name').get(pk=x[0])
+        type_item = NewsType.objects.values_list('id', 'name').get(pk=x[0])
         item = {
             'id': x[0],
             'total': x[1],
-            'name': type_item.name
+            'name': type_item[1],
+            'isFollow': 1 if type_item[0] in follow_list else 0,
         }
         type_list.append(item)
     data['code'] = 200
     data['msg'] = '请求成功'
     data['type_list'] = type_list
-    return HttpResponse('asd')
+    return JsonResponse(data)

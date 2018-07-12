@@ -1,6 +1,6 @@
 from django.urls import path
 
-from myApps.home.news import news_liked_api, news_operation_api
+from myApps.home.news import news_liked_api, news_operation_api, news_follow_api
 
 urlpatterns = [
     path('', news_operation_api.hello_news_operation),
@@ -17,4 +17,8 @@ urlpatterns = [
     path('all_type/', news_operation_api.news_all_type),
     path('delNews/<int:news_id>/', news_operation_api.del_news),
     path('getOneNews/<int:news_id>/', news_operation_api.get_one_news),
+    path('addFollow/', news_follow_api.add_follow_type),
+    path('rmFollow/<int:type_id>/', news_follow_api.remove_follow_type),
+    path('getFollowNews/', news_follow_api.get_news_with_follow),
+    path('getNewsOrder/', news_operation_api.get_news_order),
 ]
