@@ -123,6 +123,7 @@ def show_news(request, news_id):
         data['title'] = ''
         data['content'] = ''
     else:
+        data['id'] = news_id
         data['title'] = newsobj.title
         data['content'] = newsobj.content
         data['publish_time'] = newsobj.publish_time

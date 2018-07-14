@@ -44,12 +44,12 @@ def is_login_api(fn):
     @wraps(fn)
     def wrapper(request, *args, **kwargs):
         try:
-            request.session['user_id']
+            user_id = request.session['user_id']
         except KeyError:
             data = {'code': 300, 'msg': '未登录,无法访问'}
             return JsonResponse(data)
         else:
-            return fn(request, *args, **kwargs)
+            return fn(request, user_id, *args, **kwargs)
 
     return wrapper
 
