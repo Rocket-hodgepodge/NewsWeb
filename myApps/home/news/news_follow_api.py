@@ -14,9 +14,9 @@ from myApps.untils.wrapper_set import is_login_api
 
 @require_POST
 @is_login_api
-def add_follow_type(request):
+def add_follow_type(request, user_id):
     data = {}
-    user_id = request.session['user_id']
+    # user_id = request.session['user_id']
     type_id = request.POST.get('type_id', None)
     if not type_id:
         data['code'] = 505
@@ -44,9 +44,9 @@ def add_follow_type(request):
 
 @require_http_methods(['DELETE'])
 @is_login_api
-def remove_follow_type(request, type_id):
+def remove_follow_type(request, user_id, type_id):
     data = {}
-    user_id = request.session['user_id']
+    # user_id = request.session['user_id']
     uf_rel = UserFollowRel.objects.filter(id=type_id, use=user_id)
     if not uf_rel:
         data['code'] = 4601

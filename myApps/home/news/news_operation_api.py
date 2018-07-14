@@ -1,5 +1,8 @@
 """
 新闻操作模块
+Auth: TTC YangFan
+Date: 2018-07-03
+
 """
 from datetime import datetime
 
@@ -10,7 +13,7 @@ from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
-from myApps.models import NewsArticle, NewsType, UserFollowRel
+from myApps.models import NewsArticle, NewsType, UserFollowRel, User
 from myApps.untils.wrapper_set import is_login_api
 
 
@@ -275,7 +278,7 @@ def alter_news(request):
 
 
 @is_login_api
-def get_news_with_follow(request):
+def get_news_with_follow(request, user_id):
     """
     获取用户关注类型的前30条，未登录300未登录
 
@@ -283,14 +286,18 @@ def get_news_with_follow(request):
     :return: Json数据
     """
     data = {}
-    user = request.session.get('user_id', None)
     try:
+        user = User.objects.get(pk=user_id)
         follow_set = user.follow_type.value_list('id').all()
         follow_list = [x[0] for x in follow_set]
         news_set = NewsArticle.objects.filter(type_id__in=follow_list).order_by('-publish_time')[:30]
     except db.Error:
         data['code'] = 400
         data['msg'] = '服务器忙,请稍后再试'
+        return JsonResponse(data)
+    except ObjectDoesNotExist:
+        data['code'] = 505
+        data['msg'] = '用户不存在'
         return JsonResponse(data)
     news_list = []
     for news in news_set:

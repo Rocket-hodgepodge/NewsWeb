@@ -4,40 +4,45 @@ AUTH:
 DATE:
 
 """
+from django import db
 from django.http.response import HttpResponse, JsonResponse
+from django.views.decorators.http import require_GET, require_POST
+
 from myApps.models import NewsLiked
+from myApps.untils.wrapper_set import is_login_api
 
 
 def hello_news_liked(request):
     return HttpResponse('Hello News Liked')
 
 
+@require_GET
 def get_news_liked_num(request):
     """
-    获取新闻点赞数
-    :param request:
-    :return:
+    获取新闻的点赞数量
+    :param request: 请求对象
+    :return: JSON数据
     """
-    if request.method == 'GET':
-        data = {}
-        try:
-            # 获取新闻id
-            news_id = request.GET.get('news_id')
-            # 获取新闻点赞数
-            total = NewsLiked.objects.filter(news=news_id).count()
-        except Exception as e:
-            print(e)
-            data['code'] = 4021
-            data['msg'] = '请求的news_id不存在'
-            return JsonResponse(data)
-        else:
-            data['code'] = 200
-            data['msg'] = '请求成功'
-            data['total'] = total
-            return JsonResponse(data)
+    data = {}
+    news_id = request.GET.get('news_id', None)
+    if not news_id:
+        data['code'] = 504
+        data['msg'] = '参数错误'
+        return JsonResponse(data)
+    try:
+        num = NewsLiked.objects.filter(news_id=news_id).count()
+    except db.Error:
+        data['code'] = 400
+        data['msg'] = '服务器忙，请稍后再试！'
+        return JsonResponse(data)
+    else:
+        data['code'] = 200
+        data['msg'] = '请求成功'
+        data['num'] = num
+        return JsonResponse(data)
 
 
-def news_liked(request):
+def news_liked1(request):
     """
     新闻点赞
     :param request:
@@ -65,3 +70,36 @@ def news_liked(request):
             return JsonResponse(data)
         else:
             return JsonResponse(data)
+
+
+@require_POST
+@is_login_api
+def news_liked(request, user_id):
+    """
+    新闻点赞
+    :param user_id: 用户ID
+    :param request:
+    :return:
+    """
+    data = {}
+    news_id = request.POST.get('news_id', None)
+    if not news_id:
+        data['code'] = 504
+        data['msg'] = '参数错误'
+        return JsonResponse(data)
+    try:
+        action = NewsLiked.objects.filter(news_id=news_id, use_id=user_id).count()
+        if action:
+            data['code'] = 4301
+            data['msg'] = '新闻点赞失败，请勿重复点击'
+            return JsonResponse(data)
+        NewsLiked(news_id=news_id, use_id=user_id).save()
+    except db.Error:
+        data['code'] = 400
+        data['msg'] = '服务器忙，请稍后再试！'
+        return JsonResponse(data)
+    else:
+        data['code'] = 200
+        data['msg'] = '请求成功'
+        return JsonResponse(data)
+
