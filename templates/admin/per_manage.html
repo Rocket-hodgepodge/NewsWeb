@@ -45,7 +45,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> 注销</a>
+                        <li><a id="logout_a" href=""><i class="fa fa-sign-out fa-fw"></i> 注销</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -72,7 +72,7 @@
                         <a href="/admin/reviewManage"><i class="fa fa-bar-chart-o"></i> 评论管理</a>
                     </li>
                     <li>
-                        <a href="/admin/roleManage/"><i class="fa fa-qrcode"></i> 角色管理</a>
+                        <a href="/admin/roleManage/"><i class="fa fa-qrcode"></i> 用户角色管理</a>
                     </li>
                     <li>
                         <a class="active-menu" href="/admin/perManage/"><i class="fa fa-table"></i> 权限管理</a>
@@ -104,6 +104,23 @@
 	                	时间：2018-07-04
 	                	描述：对角色进行权限的修改
 	                -->
+                    <h1>功能正在开发中，敬请期待！</h1>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>角色名</th>
+                                <th>添加评论</th>
+                                <th>删除评论</th>
+                                <th>修改新闻</th>
+                                <th>删除新闻</th>
+                            </tr>
+                        </thead>
+                        <tbody id="my_tbody">
+                            {% for foo in test %}
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <!-- /. PAGE INNER  -->

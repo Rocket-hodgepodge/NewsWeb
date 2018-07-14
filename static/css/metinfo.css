@@ -1,6 +1,6 @@
 /*初始化*/
 body,h1,h2,h3,h4,h5,h6,dl,dt,li,dd,th,td,p,pre,form,input,button,textarea,hr{margin:0;padding:0;}h1,h2,h3,h4,h5,h6{font-size:100%;}img{border:0;}button,input,select,textarea{font-size:100%;}
-ul,ol{ padding-left:40px;}
+ul,ol{ padding-left:0px;}
 html,body{ font:12px/1.8 Tahoma,Verdana,'Simsun'; color:#333; background:#d5d5d7; -webkit-text-size-adjust:none;}
 a{ color:#333; text-decoration:none;}
 a:hover{ color:#1C57C4; text-decoration:none;}

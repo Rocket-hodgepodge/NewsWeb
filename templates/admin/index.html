@@ -20,6 +20,24 @@
     <link href="/static/css/admin_css/index.css" rel="stylesheet"/>
 
 </head>
+<style>
+    .big-box {
+        width: 1010px;
+        height: 650px;
+        margin: 0;
+        padding: 0;
+    }
+    .small-box {
+        width: 500px;
+        height: 320px;
+        position: relative;
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+    }
+
+</style>
+
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
@@ -45,7 +63,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> 注销</a>
+                        <li><a id="logout_a" href="#"><i class="fa fa-sign-out fa-fw"></i> 注销</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -72,7 +90,7 @@
                         <a href="/admin/reviewManage/"><i class="fa fa-bar-chart-o"></i> 评论管理</a>
                     </li>
                     <li>
-                        <a href="/admin/roleManage/"><i class="fa fa-qrcode"></i> 角色管理</a>
+                        <a href="/admin/roleManage/"><i class="fa fa-qrcode"></i> 用户角色管理</a>
                     </li>
                     <li>
                         <a href="/admin/perManage/"><i class="fa fa-table"></i> 权限管理</a>
@@ -104,6 +122,14 @@
                         时间：2018-07-04
                         描述：这里写报表控件
                     -->
+
+                    <div class="big-box">
+                        <div class="small-box" id="type_count"></div>
+                        <div class="small-box" id="news_count" ></div>
+                        <div class="small-box" id ="active_user"></div>
+                        <div class="small-box" id="web_user"></div>
+                    </div>
+
                 </div>
             </div>
             <!-- /. PAGE INNER  -->
@@ -122,6 +148,7 @@
     <script src="/static/js/custom-scripts.js"></script>
 
     <!-- 控制当前页面的js文件 -->
+    <script src="/static/js/echarts.min.js"></script>
     <script src="/static/js/page_js/admin_js/index.js"></script>
 
 

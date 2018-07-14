@@ -36,3 +36,13 @@
     });
 
 }(jQuery));
+$(function () {
+    $('#logout_a').on('click', function (e) {
+        e.preventDefault();
+        $.get('/user_operation/logout/', function (data) {
+            if (data.code === 200) {
+                window.location.href = '/home/'
+            }
+        })
+    })
+});

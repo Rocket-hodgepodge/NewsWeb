@@ -3,18 +3,24 @@
 AUTH:
 DATA:
 """
+import uuid
 from datetime import datetime
+import os
+
 from django.contrib.auth.hashers import make_password, check_password
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
 from io import BytesIO
+import qiniu
+from PIL import Image
 
+from hodgepodge.settings import BASE_DIR
 from myApps.untils import verify_code
 from myApps.models import User, Role
 
 
 def hello_user_operation(request):
-    return HttpResponse('Hello User Operation')
+    return HttpResponse('hello')
 
 
 def register(request):
@@ -89,6 +95,8 @@ def login(request):
                 data['code'] = 3202
                 data['msg'] = '密码错误'
                 return JsonResponse(data)
+            user.last_login_time = datetime.now()
+            user.save()
             request.session['user_id'] = user.id
             request.session['role_id'] = user.rol_id
             data['code'] = 200
@@ -112,3 +120,62 @@ def set_verify(request, v_random):
         resp = HttpResponse(f.getvalue(), content_type='image/jpeg')
         request.session['v_code'] = v_code.verify_code
         return resp
+
+
+def logout(request):
+    if request.method == 'GET':
+        for key in ['user_id', 'role_id']:
+            del request.session[key]
+        data = {'code': 200, 'msg': '注销成功'}
+        return JsonResponse(data)
+
+
+def icon_modify(request):
+    if request.method == 'POST':
+        try:
+            file = request.FILES.get('file')
+            file_ex = file.name.split('.')[-1]
+            media_dir = os.path.join(os.path.join(BASE_DIR, 'static/media'), 'image.' + file_ex)
+            with open(media_dir, 'wb') as f:
+                for chunk in file.chunks():
+                    f.write(chunk)
+            access_key = 'rdNJE5t51H_Y8MDgF_Cg4d1q5fjVQvvR6dDgIHnY'
+            secret_key = 'DBSZaWdYKsfqvRaAqvRkPpGtcD-XiLDmsYnFBIZj'
+            bucket_url = 'pbfkv2zhm.bkt.clouddn.com'  # 仓库域名
+            bucket_name = 'hodge'  # 仓库名
+            image_name = uuid.uuid1()
+            q = qiniu.Auth(access_key, secret_key)  # 验证
+            token = q.upload_token(bucket_name, image_name)
+            ret, info = qiniu.put_file(token, image_name, media_dir)
+            path = 'http://{}/{}'.format(bucket_url, ret['key'])
+            User.objects.filter(pk=request.session['user_id']).update(head_icon=path)
+            data = {'code': 200, 'path': path}
+            return JsonResponse(data)
+        except Exception as e:
+            print(e)
+            data = {'code': 400}
+            return JsonResponse(data)
+
+
+def info_modify(request):
+    if request.method == 'GET':
+        try:
+            user_id = request.session['user_id']
+            user = User.objects.get(pk=user_id)
+            data = {'code': 200, 'nick_name': user.nick_name, 'name': user.name, 'head_icon': user.head_icon,
+                    'last_login_time': user.last_login_time.date()}
+            return JsonResponse(data)
+        except Exception as e:
+            print(e)
+            data = {'code': 300, 'msg': '未登录'}
+            return JsonResponse(data)
+    if request.method == 'POST':
+        nick_name = request.POST.get('nick_name')
+        try:
+            User.objects.filter(pk=request.session['user_id']).update(nick_name=nick_name)
+            data = {'code': 200, 'msg': '操作成功'}
+            return JsonResponse(data)
+        except Exception as e:
+            print(e)
+            data = {'code': 400, 'msg': '服务器忙,数据操作失败'}
+            return JsonResponse(data)
