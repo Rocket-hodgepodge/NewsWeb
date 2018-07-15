@@ -22,4 +22,12 @@ $(function () {
             $('#news_list').html(htmlstr);
         })
     }
+    $('#logout_a').on('click', function (e) {
+        $(this).preventDefault();
+        $.get('/user_operation/logout/', function (data) {
+            if (data.code === 200){
+                window.location.href  = '/home/'
+            }
+        })
+    })
 });

@@ -8,30 +8,29 @@ DATE: 2018年7月5日 02:12:57
 
 from django.shortcuts import render
 
-from myApps.models import Role
-from myApps.untils.wrapper_set import is_login
+from myApps.untils.wrapper_set import is_login, is_manager
 
 
-@is_login
+@is_manager
 def index(request):
     return render(request, 'admin/index.html')
 
 
-@is_login
+@is_manager
 def news_manage(request):
     return render(request, 'admin/news_manage.html')
 
 
-@is_login
+@is_manager
 def review_manage(request):
     return render(request, 'admin/review_manage.html')
 
 
-@is_login
+@is_manager
 def role_manage(request):
     return render(request, 'admin/role_manage.html')
 
 
-@is_login
+@is_manager
 def per_manage(request):
     return render(request, 'admin/per_manage.html')

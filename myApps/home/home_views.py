@@ -15,6 +15,15 @@ def hello_world(request):
     return HttpResponse('hello world!')
 
 
+def get_user_name(request):
+    try:
+        user_name = request.session.get('user_name', None)
+    except KeyError:
+        return False, ''
+    else:
+        return True, user_name
+
+
 @access_total
 def index(request):
     """
@@ -23,12 +32,12 @@ def index(request):
     :return:
     """
     news_art = NewsArticle.objects.order_by('-publish_time')[:10]
-    print(len(news_art))
     news_list = encapsulation_data(news_art)
     hot_art = NewsArticle.objects.order_by('-read_total')[:10]
     hot_list = encapsulation_data(hot_art)
     society_info = get_one_last_info('社会')
     newss_info = get_one_last_info('新闻')
+    islogin, user_name = get_user_name(request)
 
     # try:
     #     user_id = request.session['user_id']
@@ -44,7 +53,9 @@ def index(request):
     return render(request, 'home/index.html', context={'newsList': news_list,
                                                        'hotList': hot_list,
                                                        'society_info': society_info,
-                                                       'newss_info': newss_info})
+                                                       'newss_info': newss_info,
+                                                       'islogin': islogin,
+                                                       'user_name': user_name})
 
 
 @access_total
@@ -85,7 +96,10 @@ def hot_news(request):
     :param request:
     :return:
     """
-    return render(request, 'home/hot_news.html')
+    islogin, user_name = get_user_name(request)
+    return render(request, 'home/hot_news.html', context={'islogin': islogin,
+                                                          'user_name': user_name
+                                                          })
 
 
 @access_total
@@ -95,7 +109,10 @@ def news(request):
     :param request:
     :return:
     """
-    return render(request, 'home/news.html')
+    islogin, user_name = get_user_name(request)
+    return render(request, 'home/news.html', context={'islogin': islogin,
+                                                      'user_name': user_name
+                                                      })
 
 
 @access_total
@@ -105,7 +122,10 @@ def news_search(request):
     :param request: 请求对象
     :return:
     """
-    return render(request, 'home/news_search.html')
+    islogin, user_name = get_user_name(request)
+    return render(request, 'home/news_search.html', context={'islogin': islogin,
+                                                             'user_name': user_name
+                                                             })
 
 
 @access_total
@@ -116,6 +136,7 @@ def show_news(request, news_id):
     :param request:
     :return:
     """
+    islogin, user_name = get_user_name(request)
     data = {}
     try:
         newsobj = NewsArticle.objects.get(pk=news_id)
@@ -130,7 +151,9 @@ def show_news(request, news_id):
         data['read_total'] = newsobj.read_total
         newsobj.read_total += 1
         newsobj.save()
-    return render(request, 'home/show_news.html', {'data': data})
+    return render(request, 'home/show_news.html', {'data': data,
+                                                   'islggin': islogin,
+                                                   'user_name': user_name})
 
 
 @access_total
@@ -140,7 +163,10 @@ def user_info(request):
     :param request:
     :return:
     """
-    return render(request, 'home/user_info.html')
+    islogin, user_name = get_user_name(request)
+    return render(request, 'home/user_info.html', context={'islogin': islogin,
+                                                           'user_name': user_name
+                                                           })
 
 
 @access_total
@@ -150,7 +176,10 @@ def news_type(request, type_id):
     :param request:
     :return:
     """
-    return render(request, 'home/type_news.html')
+    islogin, user_name = get_user_name(request)
+    return render(request, 'home/type_news.html', context={'islogin': islogin,
+                                                           'user_name': user_name
+                                                           })
 
 
 @access_total

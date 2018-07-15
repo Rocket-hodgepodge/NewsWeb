@@ -99,6 +99,7 @@ def login(request):
             user.save()
             request.session['user_id'] = user.id
             request.session['role_id'] = user.rol_id
+            request.session['user_name'] = user.nick_name
             data['code'] = 200
             data['msg'] = '登录成功'
             data['role_id'] = user.rol_id

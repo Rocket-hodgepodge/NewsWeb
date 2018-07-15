@@ -33,6 +33,32 @@ def is_login(fn):
     return wrapper
 
 
+def is_manager(fn):
+    """
+    访问页面时的登录的验证
+    未登录会跳转到登录页面
+    是否是管理员，不是管理员跳转到主页
+    :param fn:  需要判断的方法
+    :return: 返回具体页面
+    """
+
+    @wraps(fn)
+    def wrapper(request, *args, **kwargs):
+        try:
+            user_id = request.session['user_id']
+            role_id = request.session['role_id']
+            if not role_id == 1:
+                return HttpResponseRedirect('/home/')
+            print(user_id)
+        except KeyError as e:
+            print('有用户未登录', str(e))
+            return HttpResponseRedirect('/user_operation/login/')
+        else:
+            return fn(request, *args, **kwargs)
+
+    return wrapper
+
+
 def is_login_api(fn):
     """
     访问接口时调用的登录验证
@@ -60,6 +86,7 @@ def access_total(fn):
     :param fn: 需要进行访问统计的方法
     :return:
     """
+
     @wraps(fn)
     def wrapper(request, *args, **kwargs):
         StatisticsThread().start()  # 启动子线程进行统计

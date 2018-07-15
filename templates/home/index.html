@@ -23,8 +23,13 @@
                 <a href='#' onclick='addFavorite("非IE浏览器不支持此功能，请手动设置！");' style='cursor:pointer;'
                    title='收藏本站'>收藏本站</a><span>|</span>
                 <a class="fontswitch" id="StranLink" href="javascript:StranBody()">繁体中文</a><span>|</span>
-                <a href='/user_operation/login/' title='Login'>登录</a><span>|</span>
-                <a href='/user_operation/register/' title='Register'>注册</a><span>|</span>
+                {% if islogin %}
+                    <a href='/home/userInfo/' title='username'>{{ user_name }}</a><span>|</span>
+                    <a href="javascript:void(0);" id="logout_a" title="logout">注销</a><span>|</span>
+                {% else %}
+                    <a href='/user_operation/login/' title='Login'>登录</a><span>|</span>
+                    <a href='/user_operation/register/' title='Register'>注册</a><span>|</span>
+                {% endif %}
             </ul>
         </div>
 

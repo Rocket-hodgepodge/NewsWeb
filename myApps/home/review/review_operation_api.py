@@ -44,8 +44,8 @@ def get_review(request):
     user_id = request.GET.get('user_id', None)
     page = request.GET.get('page', 1)
     rows = request.GET.get('rows', 2)
-    q1 = Q(news_id=news_id) if news_id else None
-    q2 = Q(user_id=user_id) if user_id else None
+    q1 = Q(news_id=int(news_id)) if news_id else None
+    q2 = Q(use_id=int(user_id)) if user_id else None
     try:
         if q1 and q2:
             review_set = Review.objects.filter(q1 & q2)

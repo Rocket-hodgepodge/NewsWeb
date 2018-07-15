@@ -12,6 +12,7 @@
     <title>大杂烩后台管理系统-评论管理</title>
     <!-- Bootstrap Styles-->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/css/bootstrap-table.css" rel="stylesheet"/>
     <!-- FontAwesome Styles-->
     <link href="/static/css/font-awesome.css" rel="stylesheet" />
     <!-- Custom Styles-->
@@ -97,12 +98,27 @@
                     </div>
                 </div>
                 <!-- /. ROW  -->
-                <div>
+                <div class="row review_control">
                 	<!--
 	                	作者：1021766585@qq.com
 	                	时间：2018-07-04
 	                	描述：这里写查询条件,显示查询结果表格表格中带删除按钮
 	                -->
+                    <form id="search_form"  class="form-inline" action="" method="get">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="news_title">新闻ID:</label>
+                            <input name="title" type="text" class="form-control" id="news_id_input" placeholder="请输入新闻ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="user_id">用户ID:</label>
+                            <input name="user_id" type="text" class="form-control" id="user_id_input" placeholder="请输入用户ID">
+                        </div>
+                        <button id="search_btn" type="button" class="btn btn-default">搜索</button>
+                    </form>
+                    <p id="success_info" class="bg-success"></p>
+                    <p id="warning_info" class="bg-warning"></p>
+                    <table id="review_table"></table>
                 </div>
             </div>
             <!-- /. PAGE INNER  -->
@@ -115,6 +131,8 @@
     <script src="/static/js/jquery-1.11.0.js"></script>
     <!-- Bootstrap Js -->
     <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-table.js"></script>
+    <script src="/static/js/locale/bootstrap-table-zh-CN.js"></script>
     <!-- Metis Menu Js -->
     <script src="/static/js/jquery.metisMenu.js"></script>
     <!-- Custom Js -->
