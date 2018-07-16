@@ -7,6 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
+from django.views.decorators.cache import cache_page
+
 from myApps.models import NewsArticle, User, NewsType
 from myApps.untils.wrapper_set import access_total
 
@@ -25,6 +27,7 @@ def get_user_name(request):
 
 
 @access_total
+@cache_page(60 * 10)
 def index(request):
     """
     前台首页
