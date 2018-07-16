@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
+from myApps.home import home_views
 
 urlpatterns = [
+    path('', home_views.index),
     path('admin_page/', include('myApps.admin.admin_page.admin_page_api_urls')),
     path('user_operation/', include('myApps.admin.user_operation.user_operation_api_urls')),
     path('user_permission/', include('myApps.admin.user_permission.user_permission_api_urls')),
