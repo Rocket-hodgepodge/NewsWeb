@@ -13,7 +13,6 @@ from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
 from io import BytesIO
 import qiniu
-from PIL import Image
 
 from hodgepodge.settings import BASE_DIR
 from myApps.untils import verify_code
@@ -101,6 +100,7 @@ def login(request):
             request.session['user_id'] = user.id
             request.session['role_id'] = user.rol_id
             request.session['user_name'] = user.nick_name
+            cache.clear()
             data['code'] = 200
             data['msg'] = '登录成功'
             data['role_id'] = user.rol_id
