@@ -34,7 +34,7 @@ else{
     //id : '#paging',//id
     leng: 9,//总页数
     activeClass: 'page-active' ,//active类
-    firstPage: '首页',//
+      firstPage: '首页',//
     lastPage: '末页',
     prv: '«',
     next: '»',

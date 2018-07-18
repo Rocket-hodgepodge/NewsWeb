@@ -108,4 +108,13 @@ function blur_input() {
             }
         })
     }
+    $('#logout_a').on('click', function (e) {
+        $.get('/user_operation/logout/', function (data) {
+            if (data.code === 200){
+                window.location.href = '/';
+            }else {
+                alert('注销错误！');
+            }
+        });
+    });
 }
