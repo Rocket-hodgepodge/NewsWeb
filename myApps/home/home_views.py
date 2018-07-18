@@ -30,7 +30,7 @@ def get_user_name(request):
 
 
 @access_total
-# @cache_page(60 * 10)
+@cache_page(60 * 10)
 def index(request):
     """
     前台首页

@@ -8,6 +8,7 @@ from datetime import datetime
 import os
 
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.cache import cache
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
 from io import BytesIO
@@ -128,6 +129,7 @@ def logout(request):
         for key in ['user_id', 'role_id', 'user_name']:
             del request.session[key]
         data = {'code': 200, 'msg': '注销成功'}
+        cache.clear()
         return JsonResponse(data)
 
 
