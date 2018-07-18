@@ -125,7 +125,7 @@ def set_verify(request, v_random):
 
 def logout(request):
     if request.method == 'GET':
-        for key in ['user_id', 'role_id']:
+        for key in ['user_id', 'role_id', 'user_name']:
             del request.session[key]
         data = {'code': 200, 'msg': '注销成功'}
         return JsonResponse(data)

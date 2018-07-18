@@ -23,11 +23,14 @@ def get_user_name(request):
     except KeyError:
         return False, ''
     else:
-        return True, user_name
+        if user_name:
+            return True, user_name
+        else:
+            return False, ''
 
 
 @access_total
-@cache_page(60 * 10)
+# @cache_page(60 * 10)
 def index(request):
     """
     前台首页
