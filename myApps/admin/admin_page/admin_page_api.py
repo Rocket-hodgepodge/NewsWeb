@@ -6,7 +6,7 @@ DATA: 2018-07-02
 from datetime import datetime, timedelta
 from django.http.response import HttpResponse, JsonResponse
 from django.db import connection
-from myApps.models import NewsArticle,User
+from myApps.models import NewsArticle, User
 from myApps.untils.access_statistics import RedisControl
 
 
@@ -33,15 +33,15 @@ def count_news(request):
     date_list = []
 
     my_date = datetime.today()
-    a = NewsArticle.objects.filter(publish_time__gt=my_date).count()
-    date_str = my_date.strftime('%Y-%m-%d')
-    item = {'value': a, 'name': date_str}
+    date_str = my_date.strftime('%Y-%m-%d 00:00:00')
+    a = NewsArticle.objects.filter(publish_time__gt=date_str).count()
+    item = {'value': a, 'name': date_str[:10]}
     date_list.append(item)
     for i in range(4):
-        temp = my_date
+        temp = date_str
         my_date -= timedelta(days=1)
-        a = NewsArticle.objects.filter(publish_time__gte=my_date, publish_time__lte=temp).count()
-        date_str = my_date.strftime('%Y-%m-%d')
+        date_str = my_date.strftime('%Y-%m-%d 00:00:00')[:10]
+        a = NewsArticle.objects.filter(publish_time__gte=date_str, publish_time__lte=temp).count()
         item = {'value': a, 'name': date_str}
         date_list.append(item)
 
