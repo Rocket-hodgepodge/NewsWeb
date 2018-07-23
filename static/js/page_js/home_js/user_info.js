@@ -82,7 +82,8 @@ function blur_input() {
         info_success.html('昵称中不能有空格');
         info_success.show()
     } else if (!nPartten.test(m_this.val())){
-        info_success.html('昵称长度为1-32字符')
+        info_success.html('昵称长度为1-32字符');
+        info_success.show()
     } else {
         m_this.parent().html('<p id="nick_name" onclick="p_change_input()" >' + m_this.val() + '</p>');
         info_success.hide();
